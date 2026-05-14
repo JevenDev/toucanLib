@@ -1,9 +1,9 @@
 # Architecture
 
-toucanLib is structured as an Architectury multi-project repository.
+ToucanLib is structured as an Architectury multi-project repository.
 
 ```text
-toucanLib/
+ToucanLib/
 ├─ common/      shared loader-neutral source and resources
 ├─ fabric/      Fabric entrypoint and Fabric metadata
 ├─ neoforge/    NeoForge entrypoint, metadata, and NeoForge-only helpers
@@ -30,7 +30,7 @@ Use `fabric` for Fabric-specific bootstrap and integration.
 
 Current responsibility:
 
-- Fabric `ModInitializer` entrypoint that calls `toucanLib.init()`
+- Fabric `ModInitializer` entrypoint that calls `ToucanLib.init()`
 
 Future responsibilities may include Fabric-specific adapters for shared abstractions.
 
@@ -40,7 +40,7 @@ Use `neoforge` for NeoForge-specific bootstrap and APIs.
 
 Current responsibility:
 
-- NeoForge `@Mod(toucanLib.MOD_ID)` entrypoint that calls `toucanLib.init()`
+- NeoForge `@Mod(ToucanLib.MOD_ID)` entrypoint that calls `ToucanLib.init()`
 
 The README notes that NeoForge-specific networking, GUI layer, and config screen helpers currently remain under `com.jvn.toucanlib.neoforge.*` until matching cross-loader abstractions are added.
 
@@ -85,5 +85,5 @@ When adding a new helper:
 
 1. Start in `common` if it can be loader-neutral.
 2. Add a tiny platform adapter only when loader APIs differ.
-3. Keep mod-specific behavior out of toucanLib.
+3. Keep mod-specific behavior out of ToucanLib.
 4. Document the helper before using it across multiple mods.

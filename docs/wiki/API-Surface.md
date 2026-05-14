@@ -1,12 +1,12 @@
 # API Surface
 
-This page tracks the intended public surface of toucanLib.
+This page tracks the intended public surface of ToucanLib.
 
-toucanLib is still early, so treat APIs as provisional until they are used by multiple released mods.
+ToucanLib is still early, so treat APIs as provisional until they are used by multiple released mods.
 
 ## Current core API
 
-### `toucanLib.MOD_ID`
+### `ToucanLib.MOD_ID`
 
 The shared mod id constant:
 
@@ -16,19 +16,19 @@ public static final String MOD_ID = "toucanlib";
 
 Use this instead of repeating string literals in registry names, logging, platform entrypoints, metadata, and future network channels.
 
-### `toucanLib.LOGGER`
+### `ToucanLib.LOGGER`
 
 Shared SLF4J logger backed by Mojang `LogUtils`.
 
-Use this for toucanLib's own logging. Consuming mods should normally keep their own logger.
+Use this for ToucanLib's own logging. Consuming mods should normally keep their own logger.
 
-### `toucanLib.init()`
+### `ToucanLib.init()`
 
 Shared initialization entrypoint called by both platform modules.
 
 Current behavior:
 
-- logs toucanLib initialization at debug level
+- logs ToucanLib initialization at debug level
 
 Expected future behavior:
 
