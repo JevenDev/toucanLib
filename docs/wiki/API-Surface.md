@@ -40,11 +40,39 @@ Expected future behavior:
 
 The README currently calls out these areas as existing or expected helper territory:
 
+- namespaced resource location factories
 - Architectury-backed key mapping registration
 - physical-side checks
 - NeoForge networking helpers
+- NeoForge event bus registration helpers
 - NeoForge GUI layer helpers
 - NeoForge config screen helpers
+
+## Namespaced IDs
+
+`ToucanIds` is a small reusable factory for mods that create many resource locations:
+
+```java
+ToucanIds ids = ToucanIds.create("examplemod");
+ResourceLocation id = ids.id("thing");
+ResourceLocation texture = ids.texture("gui/icon.png");
+```
+
+Use this when a consuming mod would otherwise grow its own repeated `id(String path)` helper.
+
+## NeoForge Wiring Helpers
+
+`ToucanEventBuses` provides small batch helpers for NeoForge listener registration:
+
+```java
+ToucanEventBuses.on(modEventBus)
+        .listener(ModEvents::registerThings);
+ToucanEventBuses.game()
+        .listener(GameEvents::onTick)
+        .listener(GameEvents::onDeath);
+```
+
+`ToucanNetwork.safePlayToClientThreaded(...)` registers clientbound payloads that dispatch to static client handlers through the client task queue without loading the handler class on a dedicated server.
 
 ## API stability guidelines
 

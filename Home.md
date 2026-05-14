@@ -11,7 +11,7 @@ toucanLib is a small shared utility library for jvn's (that's me :D) Minecraft m
 | Platforms | Fabric, NeoForge |
 | Mod ID | `toucanlib` |
 | Package group | `com.jvn.toucanlib` |
-| Current version | `0.1.0` |
+| Current version | `0.1.2` |
 
 ## Wiki pages
 

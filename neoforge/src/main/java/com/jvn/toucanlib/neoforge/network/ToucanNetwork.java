@@ -75,6 +75,21 @@ public final class ToucanNetwork {
     }
 
     /**
+     * Registers a clientbound payload that dispatches to a static client method on the client task queue.
+     */
+    public <T extends CustomPacketPayload> void safePlayToClientThreaded(
+            CustomPacketPayload.Type<T> type,
+            StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+            String className,
+            String methodName
+    ) {
+        playToClient(type, codec, (payload, context) -> enqueue(
+                context,
+                () -> ToucanSafeClientHandler.dispatch(modId, payload, className, methodName)
+        ));
+    }
+
+    /**
      * Enqueues work on the payload context.
      */
     public static void enqueue(IPayloadContext context, Runnable work) {

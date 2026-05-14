@@ -99,7 +99,7 @@ dependencies {
 }
 ```
 
-Replace `<version>` with the ToucanLib version you want to target. The current project version is `0.1.1`.
+Replace `<version>` with the ToucanLib version you want to target. The current project version is `0.1.2`.
 
 ### Composite-build development
 
@@ -124,10 +124,13 @@ import com.jvn.toucanlib.client.ToucanColors;
 import com.jvn.toucanlib.client.ToucanEasing;
 import com.jvn.toucanlib.client.ToucanHudAnchor;
 import com.jvn.toucanlib.client.ToucanScreenRect;
+import com.jvn.toucanlib.util.ToucanIds;
 import com.jvn.toucanlib.util.ToucanResourceLocations;
 import net.minecraft.resources.ResourceLocation;
 
 ResourceLocation icon = ToucanResourceLocations.id(ToucanLib.MOD_ID, "textures/gui/example.png");
+ToucanIds ids = ToucanIds.create("examplemod");
+ResourceLocation namespacedIcon = ids.texture("gui/example.png");
 int accent = ToucanColors.withAlpha(0x00FFC850, 255);
 float eased = ToucanEasing.smoothstep(0.6F);
 ToucanScreenRect rect = new ToucanScreenRect(12, 12, 24, 24);

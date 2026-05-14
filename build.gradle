@@ -56,12 +56,12 @@ allprojects {
     tasks.withType(Test).configureEach {
         useJUnitPlatform()
     }
-}
 
-publishing {
-    repositories {
-        maven {
-            url = uri("${project.projectDir}/repo")
+    publishing {
+        repositories {
+            maven {
+                url = uri("${rootProject.projectDir}/repo")
+            }
         }
     }
 }
