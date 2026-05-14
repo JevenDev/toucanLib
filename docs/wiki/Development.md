@@ -1,6 +1,6 @@
 # Development
 
-Use this page as the working standard for ToucanLib contributions.
+Use this page as the working standard for toucanLib contributions.
 
 ## Local setup
 
@@ -64,7 +64,7 @@ refactor: split platform networking adapter
 
 ## Testing checklist
 
-Before shipping a ToucanLib change:
+Before shipping a toucanLib change:
 
 - `./gradlew build` passes
 - Fabric jar builds

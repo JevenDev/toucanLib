@@ -1,0 +1,4 @@
+[04:32:55] [Test worker/INFO]: sample install mode: UNKNOWN_HANDSHAKE_PENDING (waiting for server handshake)
+[04:32:55] [Test worker/INFO]: sample install mode: CLIENT_LOCAL_ONLY (server handshake not received)
+[04:32:55] [Test worker/INFO]: sample install mode: UNKNOWN_HANDSHAKE_PENDING (waiting for server handshake)
+[04:32:55] [Test worker/INFO]: sample install mode: SERVER_AUTHORITATIVE (remote server has sample)

@@ -2,8 +2,8 @@ package com.jvn.toucanlib.util;
 
 import net.minecraft.resources.ResourceLocation;
 
-public final class ToucanResourceLocations {
-    private ToucanResourceLocations() {
+public final class toucanResourceLocations {
+    private toucanResourceLocations() {
     }
 
     /**

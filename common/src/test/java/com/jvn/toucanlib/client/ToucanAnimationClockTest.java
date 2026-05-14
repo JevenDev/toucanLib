@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-class ToucanAnimationClockTest {
+class toucanAnimationClockTest {
     @Test
     void ticksOnlyAdvanceWhenUnpaused() {
-        ToucanAnimationClock clock = new ToucanAnimationClock();
+        toucanAnimationClock clock = new toucanAnimationClock();
 
         clock.tick(false);
         clock.tick(true);
@@ -18,7 +18,7 @@ class ToucanAnimationClockTest {
 
     @Test
     void progressIsClampedToDuration() {
-        ToucanAnimationClock clock = new ToucanAnimationClock();
+        toucanAnimationClock clock = new toucanAnimationClock();
 
         clock.setTicks(15);
 

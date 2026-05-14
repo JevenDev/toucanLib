@@ -1,6 +1,6 @@
 # Getting Started
 
-ToucanLib is intended to be consumed by JVN mods as a shared library. It is not a gameplay mod by itself; it provides common helpers and platform entrypoints.
+toucanLib is intended to be consumed by JVN mods as a shared library. It is not a gameplay mod by itself; it provides common helpers and platform entrypoints.
 
 ## Requirements
 
@@ -32,20 +32,20 @@ fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar
 neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar
 ```
 
-## Adding ToucanLib to another mod workspace
+## Adding toucanLib to another mod workspace
 
-Until ToucanLib is published to a remote Maven, the simplest workflow is to build it locally and depend on the generated jar in the consuming mod's development environment.
+Until toucanLib is published to a remote Maven, the simplest workflow is to build it locally and depend on the generated jar in the consuming mod's development environment.
 
 Recommended local workflow:
 
-1. Build ToucanLib with `./gradlew build`.
+1. Build toucanLib with `./gradlew build`.
 2. Copy the matching platform jar into the consuming mod's local `libs/` or run-mods folder.
 3. Add the dependency as `modImplementation` / `runtimeOnly` according to the consuming project setup.
 4. Keep the Fabric and NeoForge jar variants matched to the loader you are testing.
 
 ## Versioning expectations
 
-ToucanLib should use semantic-style versions:
+toucanLib should use semantic-style versions:
 
 - patch bump for internal fixes that do not change public helper behavior
 - minor bump for new helpers or additive API changes

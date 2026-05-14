@@ -2,8 +2,8 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
-public final class ToucanEasing {
-    private ToucanEasing() {
+public final class toucanEasing {
+    private toucanEasing() {
     }
 
     /**

@@ -2,8 +2,8 @@ package com.jvn.toucanlib.input;
 
 import net.minecraft.client.KeyMapping;
 
-public record ToucanKeybind(String name, KeyMapping mapping) {
-    public ToucanKeybind {
+public record toucanKeybind(String name, KeyMapping mapping) {
+    public toucanKeybind {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("name must not be blank");
         }

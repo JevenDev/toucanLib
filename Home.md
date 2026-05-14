@@ -1,6 +1,6 @@
-# ToucanLib Wiki
+# toucanLib Wiki
 
-ToucanLib is a small shared utility library for jvn's (that's me :D) Minecraft mods. It is currently organized as an Architectury multi-project build with shared common code plus Fabric and NeoForge platform modules.
+toucanLib is a small shared utility library for jvn's (that's me :D) Minecraft mods. It is currently organized as an Architectury multi-project build with shared common code plus Fabric and NeoForge platform modules.
 
 ## Current targets
 
@@ -21,9 +21,9 @@ ToucanLib is a small shared utility library for jvn's (that's me :D) Minecraft m
 - [Development](Development)
 - [Release Checklist](Release-Checklist)
 
-## What belongs in ToucanLib?
+## What belongs in toucanLib?
 
-ToucanLib holds reusable systems that are useful across multiple of my mods, especially when they reduce duplicated loader-specific code.
+toucanLib holds reusable systems that are useful across multiple of my mods, especially when they reduce duplicated loader-specific code.
 
 Some good candidates include:
 - shared registration helpers
@@ -34,4 +34,4 @@ Some good candidates include:
 - GUI layer helpers
 - small compatibility-safe utilities used by multiple mods
 
-I avoided moving mod-specific gameplay logic into ToucanLib unless at least two mods actually need it.
+I avoided moving mod-specific gameplay logic into toucanLib unless at least two mods actually need it.

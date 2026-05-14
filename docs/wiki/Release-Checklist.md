@@ -1,6 +1,6 @@
 # Release Checklist
 
-Use this checklist before publishing or tagging a ToucanLib version.
+Use this checklist before publishing or tagging a toucanLib version.
 
 ## 1. Confirm version metadata
 
@@ -35,12 +35,12 @@ neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar
 
 ## 3. Smoke test consuming mods
 
-At minimum, test ToucanLib with one mod that depends on it for each supported loader.
+At minimum, test toucanLib with one mod that depends on it for each supported loader.
 
 Check:
 
 - Minecraft launches
-- the loader detects ToucanLib
+- the loader detects toucanLib
 - no missing dependency warnings appear
 - client-only helpers do not load on dedicated servers
 - common initialization runs once per platform
@@ -72,7 +72,7 @@ Suggested release order:
 2. Build clean jars.
 3. Create a GitHub release or tag.
 4. Upload/publish Fabric and NeoForge artifacts.
-5. Update consuming mods to the new ToucanLib version.
+5. Update consuming mods to the new toucanLib version.
 
 ## 7. Post-release notes
 

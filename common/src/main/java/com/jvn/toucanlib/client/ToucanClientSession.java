@@ -2,21 +2,21 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.client.Minecraft;
 
-public final class ToucanClientSession {
+public final class toucanClientSession {
     private boolean inWorld;
     private int ticksInSession;
 
     /**
      * Updates session state from the current Minecraft client.
      */
-    public ToucanClientSessionUpdate tick(Minecraft minecraft) {
+    public toucanClientSessionUpdate tick(Minecraft minecraft) {
         return tick(minecraft != null && minecraft.player != null && minecraft.level != null);
     }
 
     /**
      * Updates session state from a caller-provided in-world flag.
      */
-    public ToucanClientSessionUpdate tick(boolean currentlyInWorld) {
+    public toucanClientSessionUpdate tick(boolean currentlyInWorld) {
         boolean enteredWorld = !inWorld && currentlyInWorld;
         boolean leftWorld = inWorld && !currentlyInWorld;
         inWorld = currentlyInWorld;
@@ -29,7 +29,7 @@ public final class ToucanClientSession {
             ticksInSession++;
         }
 
-        return new ToucanClientSessionUpdate(enteredWorld, leftWorld, inWorld, ticksInSession);
+        return new toucanClientSessionUpdate(enteredWorld, leftWorld, inWorld, ticksInSession);
     }
 
     /**
@@ -54,6 +54,6 @@ public final class ToucanClientSession {
         return ticksInSession;
     }
 
-    public record ToucanClientSessionUpdate(boolean enteredWorld, boolean leftWorld, boolean inWorld, int ticksInSession) {
+    public record toucanClientSessionUpdate(boolean enteredWorld, boolean leftWorld, boolean inWorld, int ticksInSession) {
     }
 }

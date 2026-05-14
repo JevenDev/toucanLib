@@ -2,7 +2,7 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
-public final class ToucanAnimationClock {
+public final class toucanAnimationClock {
     private int ticks;
 
     /**

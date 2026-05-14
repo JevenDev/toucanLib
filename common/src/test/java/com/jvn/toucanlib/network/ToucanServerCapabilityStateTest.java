@@ -10,34 +10,34 @@ import org.junit.jupiter.api.Test;
 class ToucanServerCapabilityStateTest {
     @Test
     void handshakeFallsBackAfterConfiguredTicks() {
-        ToucanServerCapabilityState state = ToucanServerCapabilityState.create("sample", null);
+        toucanServerCapabilityState state = toucanServerCapabilityState.create("sample", null);
 
         state.beginHandshake(2);
         state.clientTick();
 
-        assertEquals(ToucanInstallMode.UNKNOWN_HANDSHAKE_PENDING, state.mode());
+        assertEquals(toucanInstallMode.UNKNOWN_HANDSHAKE_PENDING, state.mode());
 
         state.clientTick();
 
-        assertEquals(ToucanInstallMode.CLIENT_LOCAL_ONLY, state.mode());
+        assertEquals(toucanInstallMode.CLIENT_LOCAL_ONLY, state.mode());
         assertTrue(state.isClientOnlyFallback());
         assertFalse(state.isServerAuthoritative());
     }
 
     @Test
     void serverConfirmationClearsFallbackMode() {
-        ToucanServerCapabilityState state = ToucanServerCapabilityState.create("sample", null);
+        toucanServerCapabilityState state = toucanServerCapabilityState.create("sample", null);
 
         state.beginHandshake(5);
         state.confirmServerAuthoritative(false);
 
-        assertEquals(ToucanInstallMode.SERVER_AUTHORITATIVE, state.mode());
+        assertEquals(toucanInstallMode.SERVER_AUTHORITATIVE, state.mode());
         assertTrue(state.isServerAuthoritative());
         assertFalse(state.isClientOnlyFallback());
     }
 
     @Test
     void rejectsBlankModId() {
-        assertThrows(IllegalArgumentException.class, () -> ToucanServerCapabilityState.create(" "));
+        assertThrows(IllegalArgumentException.class, () -> toucanServerCapabilityState.create(" "));
     }
 }

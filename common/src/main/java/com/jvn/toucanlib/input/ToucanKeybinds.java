@@ -1,6 +1,6 @@
 package com.jvn.toucanlib.input;
 
-import com.jvn.toucanlib.client.ToucanClientOnly;
+import com.jvn.toucanlib.client.toucanClientOnly;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import java.util.ArrayList;
@@ -8,12 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.KeyMapping;
 
-public final class ToucanKeybinds {
+public final class toucanKeybinds {
     private final String modId;
     private final String category;
-    private final List<ToucanKeybind> keybinds = new ArrayList<>();
+    private final List<toucanKeybind> keybinds = new ArrayList<>();
 
-    private ToucanKeybinds(String modId, String category) {
+    private toucanKeybinds(String modId, String category) {
         this.modId = requireIdentifierPart(modId, "modId");
         this.category = requireTranslationKey(category, "category");
     }
@@ -21,16 +21,16 @@ public final class ToucanKeybinds {
     /**
      * Creates a keybind collection with category key.categories.&lt;modid&gt;.
      */
-    public static ToucanKeybinds create(String modId) {
+    public static toucanKeybinds create(String modId) {
         String cleanModId = requireIdentifierPart(modId, "modId");
-        return new ToucanKeybinds(cleanModId, "key.categories." + cleanModId);
+        return new toucanKeybinds(cleanModId, "key.categories." + cleanModId);
     }
 
     /**
      * Creates a keybind collection with a custom category translation key.
      */
-    public static ToucanKeybinds create(String modId, String category) {
-        return new ToucanKeybinds(modId, category);
+    public static toucanKeybinds create(String modId, String category) {
+        return new toucanKeybinds(modId, category);
     }
 
     /**
@@ -44,10 +44,10 @@ public final class ToucanKeybinds {
      * Creates and remembers a key mapping using a caller-selected input type.
      */
     public KeyMapping key(String name, InputConstants.Type inputType, int keyCode) {
-        ToucanClientOnly.requireClient("Key mappings");
+        toucanClientOnly.requireClient("Key mappings");
         String cleanName = requireIdentifierPart(name, "name");
         KeyMapping mapping = new KeyMapping("key." + modId + "." + cleanName, inputType, keyCode, category);
-        keybinds.add(new ToucanKeybind(cleanName, mapping));
+        keybinds.add(new toucanKeybind(cleanName, mapping));
         return mapping;
     }
 
@@ -55,8 +55,8 @@ public final class ToucanKeybinds {
      * Registers all remembered mappings through Architectury.
      */
     public void register() {
-        ToucanClientOnly.requireClient("Key mapping registration");
-        for (ToucanKeybind keybind : keybinds) {
+        toucanClientOnly.requireClient("Key mapping registration");
+        for (toucanKeybind keybind : keybinds) {
             KeyMappingRegistry.register(keybind.mapping());
         }
     }
@@ -74,7 +74,7 @@ public final class ToucanKeybinds {
     /**
      * Returns the remembered mappings in registration order.
      */
-    public List<ToucanKeybind> keybinds() {
+    public List<toucanKeybind> keybinds() {
         return Collections.unmodifiableList(keybinds);
     }
 

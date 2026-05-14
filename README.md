@@ -1,4 +1,4 @@
-# ToucanLib
+# toucanLib
 
 Small shared multi-loader utility helpers for JVN mods.
 
@@ -10,7 +10,7 @@ Start there for setup notes, architecture, current API surface, development stan
 
 ## Loaders
 
-ToucanLib is structured as an Architectury multi-project build:
+toucanLib is structured as an Architectury multi-project build:
 
 - `common` contains loader-neutral code and shared resources.
 - `fabric` contains the Fabric entrypoint and Fabric metadata.

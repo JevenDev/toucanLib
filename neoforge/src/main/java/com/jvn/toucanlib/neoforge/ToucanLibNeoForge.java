@@ -1,11 +1,11 @@
 package com.jvn.toucanlib.neoforge;
 
-import com.jvn.toucanlib.ToucanLib;
+import com.jvn.toucanlib.toucanLib;
 import net.neoforged.fml.common.Mod;
 
-@Mod(ToucanLib.MOD_ID)
-public final class ToucanLibNeoForge {
-    public ToucanLibNeoForge() {
-        ToucanLib.init();
+@Mod(toucanLib.MOD_ID)
+public final class toucanLibNeoForge {
+    public toucanLibNeoForge() {
+        toucanLib.init();
     }
 }

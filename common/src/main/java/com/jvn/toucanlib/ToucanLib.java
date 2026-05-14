@@ -3,14 +3,14 @@ package com.jvn.toucanlib;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-public final class ToucanLib {
+public final class toucanLib {
     public static final String MOD_ID = "toucanlib";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private ToucanLib() {
+    private toucanLib() {
     }
 
     public static void init() {
-        LOGGER.debug("Initializing ToucanLib");
+        LOGGER.debug("Initializing toucanLib");
     }
 }

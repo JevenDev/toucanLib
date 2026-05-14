@@ -1,6 +1,6 @@
 package com.jvn.toucanlib.client;
 
-public enum ToucanHudAnchor {
+public enum toucanHudAnchor {
     TOP_LEFT,
     TOP_RIGHT,
     BOTTOM_LEFT,

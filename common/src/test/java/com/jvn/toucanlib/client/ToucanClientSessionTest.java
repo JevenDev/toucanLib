@@ -4,17 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.jvn.toucanlib.client.ToucanClientSession.ToucanClientSessionUpdate;
+import com.jvn.toucanlib.client.toucanClientSession.toucanClientSessionUpdate;
 import org.junit.jupiter.api.Test;
 
-class ToucanClientSessionTest {
+class toucanClientSessionTest {
     @Test
     void reportsEnterStayAndLeaveTransitions() {
-        ToucanClientSession session = new ToucanClientSession();
+        toucanClientSession session = new toucanClientSession();
 
-        ToucanClientSessionUpdate enter = session.tick(true);
-        ToucanClientSessionUpdate stay = session.tick(true);
-        ToucanClientSessionUpdate leave = session.tick(false);
+        toucanClientSessionUpdate enter = session.tick(true);
+        toucanClientSessionUpdate stay = session.tick(true);
+        toucanClientSessionUpdate leave = session.tick(false);
 
         assertTrue(enter.enteredWorld());
         assertFalse(enter.leftWorld());
