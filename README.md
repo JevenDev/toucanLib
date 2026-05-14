@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/JevenDev/toucanLib/refs/heads/1.21.1/common/src/main/resources/logo.png">
+
 # ToucanLib
 
 Small shared multi-loader utility helpers for JVN mods.
