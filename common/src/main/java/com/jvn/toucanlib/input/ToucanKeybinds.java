@@ -1,11 +1,11 @@
 package com.jvn.toucanlib.input;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.KeyMapping;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 public final class ToucanKeybinds {
     private final String modId;
@@ -50,12 +50,22 @@ public final class ToucanKeybinds {
     }
 
     /**
-     * Registers all remembered mappings with NeoForge.
+     * Registers all remembered mappings through Architectury.
      */
-    public void register(RegisterKeyMappingsEvent event) {
+    public void register() {
         for (ToucanKeybind keybind : keybinds) {
-            event.register(keybind.mapping());
+            KeyMappingRegistry.register(keybind.mapping());
         }
+    }
+
+    /**
+     * Registers all remembered mappings through Architectury.
+     *
+     * @deprecated Use {@link #register()} instead. The argument is ignored.
+     */
+    @Deprecated(forRemoval = false)
+    public void register(Object ignoredEvent) {
+        register();
     }
 
     /**

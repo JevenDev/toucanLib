@@ -1,25 +1,26 @@
+# ToucanLib
 
-Installation information
-=======
+Small shared multi-loader utility helpers for JVN mods.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## Loaders
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+ToucanLib is structured as an Architectury multi-project build:
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+- `common` contains loader-neutral code and shared resources.
+- `fabric` contains the Fabric entrypoint and Fabric metadata.
+- `neoforge` contains the NeoForge entrypoint, NeoForge metadata, and NeoForge-only helper APIs.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+## Building
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+```sh
+./gradlew build
+```
+
+The platform jars are written to:
+
+- `fabric/build/libs/toucanlib-fabric-<version>.jar`
+- `neoforge/build/libs/toucanlib-neoforge-<version>.jar`
+
+## Notes
+
+The common module depends on Architectury API. Key mapping registration and physical-side checks already use Architectury wrappers, while NeoForge-specific networking, GUI layer, and config screen helpers remain in the NeoForge module until matching cross-loader abstractions are added.

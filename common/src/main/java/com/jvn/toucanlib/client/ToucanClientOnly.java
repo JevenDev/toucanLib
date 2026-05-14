@@ -1,11 +1,11 @@
 package com.jvn.toucanlib.client;
 
 import com.jvn.toucanlib.ToucanLib;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
 
 public final class ToucanClientOnly {
     private ToucanClientOnly() {
@@ -15,7 +15,7 @@ public final class ToucanClientOnly {
      * Returns true when the current physical distribution is the client.
      */
     public static boolean isClient() {
-        return FMLEnvironment.dist == Dist.CLIENT;
+        return Platform.getEnvironment() == Env.CLIENT;
     }
 
     /**
