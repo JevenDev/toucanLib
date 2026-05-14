@@ -3,7 +3,6 @@ package com.jvn.toucanlib.client;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 
 public final class ToucanHudText {
     private ToucanHudText() {
@@ -49,7 +48,7 @@ public final class ToucanHudText {
      * Replaces the alpha channel of an ARGB or RGB color.
      */
     public static int withAlpha(int color, int alpha) {
-        return (Mth.clamp(alpha, 0, 255) << 24) | (color & 0x00FFFFFF);
+        return ToucanColors.withAlpha(color, alpha);
     }
 
     /**
