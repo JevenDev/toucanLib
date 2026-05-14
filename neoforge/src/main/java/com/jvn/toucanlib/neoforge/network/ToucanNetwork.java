@@ -1,5 +1,6 @@
-package com.jvn.toucanlib.network;
+package com.jvn.toucanlib.neoforge.network;
 
+import com.jvn.toucanlib.network.ToucanSafeClientHandler;
 import java.util.function.Consumer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

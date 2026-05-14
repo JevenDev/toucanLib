@@ -1,4 +1,4 @@
-package com.jvn.toucanlib.client;
+package com.jvn.toucanlib.neoforge.client;
 
 import com.jvn.toucanlib.util.ToucanResourceLocations;
 import net.minecraft.client.gui.LayeredDraw;

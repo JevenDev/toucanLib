@@ -1,4 +1,4 @@
-package com.jvn.toucanlib.config;
+package com.jvn.toucanlib.neoforge.config;
 
 import java.util.function.BiFunction;
 import net.minecraft.client.gui.screens.Screen;
