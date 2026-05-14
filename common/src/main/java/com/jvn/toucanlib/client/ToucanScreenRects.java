@@ -1,7 +1,7 @@
 package com.jvn.toucanlib.client;
 
-public final class toucanScreenRects {
-    private toucanScreenRects() {
+public final class ToucanScreenRects {
+    private ToucanScreenRects() {
     }
 
     /**
@@ -21,7 +21,7 @@ public final class toucanScreenRects {
     /**
      * Creates a screen rectangle.
      */
-    public static toucanScreenRect of(int x, int y, int width, int height) {
-        return new toucanScreenRect(x, y, width, height);
+    public static ToucanScreenRect of(int x, int y, int width, int height) {
+        return new ToucanScreenRect(x, y, width, height);
     }
 }

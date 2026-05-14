@@ -1,11 +1,11 @@
 package com.jvn.toucanlib.fabric;
 
-import com.jvn.toucanlib.toucanLib;
+import com.jvn.toucanlib.ToucanLib;
 import net.fabricmc.api.ModInitializer;
 
-public final class toucanLibFabric implements ModInitializer {
+public final class ToucanLibFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        toucanLib.init();
+        ToucanLib.init();
     }
 }

@@ -2,8 +2,8 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
-public final class toucanColors {
-    private toucanColors() {
+public final class ToucanColors {
+    private ToucanColors() {
     }
 
     /**
@@ -25,21 +25,21 @@ public final class toucanColors {
      */
     public static int multiplyAlpha(int color, float alpha) {
         int baseAlpha = (color >>> 24) & 0xFF;
-        return withAlpha(color, Math.round(baseAlpha * toucanEasing.clamp01(alpha)));
+        return withAlpha(color, Math.round(baseAlpha * ToucanEasing.clamp01(alpha)));
     }
 
     /**
      * Converts a 0..1 alpha value to a byte in the range 0..255.
      */
     public static int alphaByte(float alpha) {
-        return Mth.clamp(Math.round(toucanEasing.clamp01(alpha) * 255.0F), 0, 255);
+        return Mth.clamp(Math.round(ToucanEasing.clamp01(alpha) * 255.0F), 0, 255);
     }
 
     /**
      * Linearly interpolates RGB channels while preserving the first color's alpha.
      */
     public static int lerpRgb(int from, int to, float progress) {
-        float t = toucanEasing.clamp01(progress);
+        float t = ToucanEasing.clamp01(progress);
         int a = (from >>> 24) & 0xFF;
         int r = Mth.lerpInt(t, (from >>> 16) & 0xFF, (to >>> 16) & 0xFF);
         int g = Mth.lerpInt(t, (from >>> 8) & 0xFF, (to >>> 8) & 0xFF);
@@ -51,7 +51,7 @@ public final class toucanColors {
      * Linearly interpolates ARGB channels.
      */
     public static int lerpArgb(int from, int to, float progress) {
-        float t = toucanEasing.clamp01(progress);
+        float t = ToucanEasing.clamp01(progress);
         int a = Mth.lerpInt(t, (from >>> 24) & 0xFF, (to >>> 24) & 0xFF);
         int r = Mth.lerpInt(t, (from >>> 16) & 0xFF, (to >>> 16) & 0xFF);
         int g = Mth.lerpInt(t, (from >>> 8) & 0xFF, (to >>> 8) & 0xFF);

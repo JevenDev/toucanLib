@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.jvn.toucanlib.fabric.toucanLibFabric"
+      "com.jvn.toucanlib.fabric.ToucanLibFabric"
     ]
   },
   "depends": {

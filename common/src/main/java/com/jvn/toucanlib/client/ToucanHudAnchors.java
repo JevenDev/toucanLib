@@ -1,13 +1,13 @@
 package com.jvn.toucanlib.client;
 
-public final class toucanHudAnchors {
-    private toucanHudAnchors() {
+public final class ToucanHudAnchors {
+    private ToucanHudAnchors() {
     }
 
     /**
      * Resolves the left X coordinate for anchored content.
      */
-    public static int x(toucanHudAnchor anchor, int screenWidth, int contentWidth, int offsetX) {
+    public static int x(ToucanHudAnchor anchor, int screenWidth, int contentWidth, int offsetX) {
         return switch (anchor) {
             case TOP_LEFT, BOTTOM_LEFT -> offsetX;
             case TOP_RIGHT, BOTTOM_RIGHT -> screenWidth - contentWidth - offsetX;
@@ -18,7 +18,7 @@ public final class toucanHudAnchors {
     /**
      * Resolves the top Y coordinate for anchored content.
      */
-    public static int y(toucanHudAnchor anchor, int screenHeight, int contentHeight, int offsetY) {
+    public static int y(ToucanHudAnchor anchor, int screenHeight, int contentHeight, int offsetY) {
         return switch (anchor) {
             case TOP_LEFT, TOP_RIGHT -> offsetY;
             case BOTTOM_LEFT, BOTTOM_RIGHT -> screenHeight - contentHeight - offsetY;
@@ -29,8 +29,8 @@ public final class toucanHudAnchors {
     /**
      * Resolves an anchored rectangle for content of the given size.
      */
-    public static toucanScreenRect rect(
-            toucanHudAnchor anchor,
+    public static ToucanScreenRect rect(
+            ToucanHudAnchor anchor,
             int screenWidth,
             int screenHeight,
             int contentWidth,
@@ -38,7 +38,7 @@ public final class toucanHudAnchors {
             int offsetX,
             int offsetY
     ) {
-        return new toucanScreenRect(
+        return new ToucanScreenRect(
                 x(anchor, screenWidth, contentWidth, offsetX),
                 y(anchor, screenHeight, contentHeight, offsetY),
                 contentWidth,

@@ -1,6 +1,6 @@
 package com.jvn.toucanlib.network;
 
-public enum toucanInstallMode {
+public enum ToucanInstallMode {
     UNKNOWN_HANDSHAKE_PENDING,
     CLIENT_LOCAL_ONLY,
     SERVER_AUTHORITATIVE,

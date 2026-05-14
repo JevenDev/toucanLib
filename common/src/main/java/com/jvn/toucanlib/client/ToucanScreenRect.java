@@ -1,7 +1,7 @@
 package com.jvn.toucanlib.client;
 
-public record toucanScreenRect(int x, int y, int width, int height) {
-    public toucanScreenRect {
+public record ToucanScreenRect(int x, int y, int width, int height) {
+    public ToucanScreenRect {
         if (width < 0) {
             throw new IllegalArgumentException("width must not be negative");
         }
@@ -42,6 +42,6 @@ public record toucanScreenRect(int x, int y, int width, int height) {
      * Returns true when a point is inside this rectangle.
      */
     public boolean contains(double pointX, double pointY) {
-        return toucanScreenRects.contains(pointX, pointY, x, y, width, height);
+        return ToucanScreenRects.contains(pointX, pointY, x, y, width, height);
     }
 }

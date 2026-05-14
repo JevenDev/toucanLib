@@ -1,6 +1,6 @@
 package com.jvn.toucanlib.neoforge.network;
 
-import com.jvn.toucanlib.network.toucanSafeClientHandler;
+import com.jvn.toucanlib.network.ToucanSafeClientHandler;
 import java.util.function.Consumer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,11 +11,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-public final class toucanNetwork {
+public final class ToucanNetwork {
     private final String modId;
     private final PayloadRegistrar registrar;
 
-    private toucanNetwork(String modId, PayloadRegistrar registrar) {
+    private ToucanNetwork(String modId, PayloadRegistrar registrar) {
         if (modId == null || modId.isBlank()) {
             throw new IllegalArgumentException("modId must not be blank");
         }
@@ -26,18 +26,18 @@ public final class toucanNetwork {
     /**
      * Creates a network wrapper around a versioned NeoForge payload registrar.
      */
-    public static toucanNetwork create(String modId, String version, RegisterPayloadHandlersEvent event) {
+    public static ToucanNetwork create(String modId, String version, RegisterPayloadHandlersEvent event) {
         if (version == null || version.isBlank()) {
             throw new IllegalArgumentException("version must not be blank");
         }
-        return new toucanNetwork(modId, event.registrar(version));
+        return new ToucanNetwork(modId, event.registrar(version));
     }
 
     /**
      * Returns a wrapper around an optional payload registrar.
      */
-    public toucanNetwork optional() {
-        return new toucanNetwork(modId, registrar.optional());
+    public ToucanNetwork optional() {
+        return new ToucanNetwork(modId, registrar.optional());
     }
 
     /**
@@ -71,7 +71,7 @@ public final class toucanNetwork {
             String className,
             String methodName
     ) {
-        playToClient(type, codec, (payload, context) -> toucanSafeClientHandler.dispatch(modId, payload, className, methodName));
+        playToClient(type, codec, (payload, context) -> ToucanSafeClientHandler.dispatch(modId, payload, className, methodName));
     }
 
     /**

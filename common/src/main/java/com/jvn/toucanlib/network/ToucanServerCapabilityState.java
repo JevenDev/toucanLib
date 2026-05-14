@@ -1,34 +1,34 @@
 package com.jvn.toucanlib.network;
 
-import com.jvn.toucanlib.toucanLib;
+import com.jvn.toucanlib.ToucanLib;
 import org.slf4j.Logger;
 
-public final class toucanServerCapabilityState {
+public final class ToucanServerCapabilityState {
     private final String modId;
     private final Logger logger;
-    private toucanInstallMode mode = toucanInstallMode.CLIENT_LOCAL_ONLY;
+    private ToucanInstallMode mode = ToucanInstallMode.CLIENT_LOCAL_ONLY;
     private int pendingTicks;
 
-    private toucanServerCapabilityState(String modId, Logger logger) {
+    private ToucanServerCapabilityState(String modId, Logger logger) {
         if (modId == null || modId.isBlank()) {
             throw new IllegalArgumentException("modId must not be blank");
         }
         this.modId = modId;
-        this.logger = logger == null ? toucanLib.LOGGER : logger;
+        this.logger = logger == null ? ToucanLib.LOGGER : logger;
     }
 
     /**
      * Creates a per-mod capability state using ToucanLib's logger.
      */
-    public static toucanServerCapabilityState create(String modId) {
-        return new toucanServerCapabilityState(modId, toucanLib.LOGGER);
+    public static ToucanServerCapabilityState create(String modId) {
+        return new ToucanServerCapabilityState(modId, ToucanLib.LOGGER);
     }
 
     /**
      * Creates a per-mod capability state using the caller's logger.
      */
-    public static toucanServerCapabilityState create(String modId, Logger logger) {
-        return new toucanServerCapabilityState(modId, logger);
+    public static ToucanServerCapabilityState create(String modId, Logger logger) {
+        return new ToucanServerCapabilityState(modId, logger);
     }
 
     /**
@@ -43,14 +43,14 @@ public final class toucanServerCapabilityState {
      */
     public void beginHandshake(int fallbackTicks) {
         pendingTicks = Math.max(0, fallbackTicks);
-        setMode(toucanInstallMode.UNKNOWN_HANDSHAKE_PENDING, "waiting for server handshake");
+        setMode(ToucanInstallMode.UNKNOWN_HANDSHAKE_PENDING, "waiting for server handshake");
     }
 
     /**
      * Advances fallback timing while a handshake is pending.
      */
     public void clientTick() {
-        if (mode != toucanInstallMode.UNKNOWN_HANDSHAKE_PENDING) {
+        if (mode != ToucanInstallMode.UNKNOWN_HANDSHAKE_PENDING) {
             pendingTicks = 0;
             return;
         }
@@ -68,7 +68,7 @@ public final class toucanServerCapabilityState {
     public void confirmServerAuthoritative(boolean integratedServer) {
         pendingTicks = 0;
         setMode(
-                integratedServer ? toucanInstallMode.INTEGRATED_SERVER_AUTHORITATIVE : toucanInstallMode.SERVER_AUTHORITATIVE,
+                integratedServer ? ToucanInstallMode.INTEGRATED_SERVER_AUTHORITATIVE : ToucanInstallMode.SERVER_AUTHORITATIVE,
                 integratedServer ? "integrated server has " + modId : "remote server has " + modId
         );
     }
@@ -78,7 +78,7 @@ public final class toucanServerCapabilityState {
      */
     public void useClientOnlyFallback(String reason) {
         pendingTicks = 0;
-        setMode(toucanInstallMode.CLIENT_LOCAL_ONLY, reason);
+        setMode(ToucanInstallMode.CLIENT_LOCAL_ONLY, reason);
     }
 
     /**
@@ -86,13 +86,13 @@ public final class toucanServerCapabilityState {
      */
     public void clear() {
         pendingTicks = 0;
-        setMode(toucanInstallMode.CLIENT_LOCAL_ONLY, "client disconnected");
+        setMode(ToucanInstallMode.CLIENT_LOCAL_ONLY, "client disconnected");
     }
 
     /**
      * Returns the current install mode.
      */
-    public toucanInstallMode mode() {
+    public ToucanInstallMode mode() {
         return mode;
     }
 
@@ -110,7 +110,7 @@ public final class toucanServerCapabilityState {
         return mode.clientOnlyFallback();
     }
 
-    private void setMode(toucanInstallMode mode, String reason) {
+    private void setMode(ToucanInstallMode mode, String reason) {
         if (this.mode == mode) {
             return;
         }

@@ -3,11 +3,11 @@ package com.jvn.toucanlib;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-public final class toucanLib {
+public final class ToucanLib {
     public static final String MOD_ID = "toucanlib";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private toucanLib() {
+    private ToucanLib() {
     }
 
     public static void init() {

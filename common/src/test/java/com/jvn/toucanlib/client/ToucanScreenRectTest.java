@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class toucanScreenRectTest {
     @Test
     void exposesEdgesCentersAndExclusiveContainment() {
-        toucanScreenRect rect = new toucanScreenRect(10, 20, 30, 40);
+        ToucanScreenRect rect = new ToucanScreenRect(10, 20, 30, 40);
 
         assertEquals(40, rect.right());
         assertEquals(60, rect.bottom());
@@ -23,7 +23,7 @@ class toucanScreenRectTest {
 
     @Test
     void rejectsNegativeSize() {
-        assertThrows(IllegalArgumentException.class, () -> new toucanScreenRect(0, 0, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> new toucanScreenRect(0, 0, 1, -1));
+        assertThrows(IllegalArgumentException.class, () -> new ToucanScreenRect(0, 0, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> new ToucanScreenRect(0, 0, 1, -1));
     }
 }

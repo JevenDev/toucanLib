@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class toucanAnimationClockTest {
     @Test
     void ticksOnlyAdvanceWhenUnpaused() {
-        toucanAnimationClock clock = new toucanAnimationClock();
+        ToucanAnimationClock clock = new ToucanAnimationClock();
 
         clock.tick(false);
         clock.tick(true);
@@ -18,7 +18,7 @@ class toucanAnimationClockTest {
 
     @Test
     void progressIsClampedToDuration() {
-        toucanAnimationClock clock = new toucanAnimationClock();
+        ToucanAnimationClock clock = new ToucanAnimationClock();
 
         clock.setTicks(15);
 

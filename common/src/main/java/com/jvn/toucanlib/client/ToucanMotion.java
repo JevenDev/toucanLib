@@ -3,8 +3,8 @@ package com.jvn.toucanlib.client;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public final class toucanMotion {
-    private toucanMotion() {
+public final class ToucanMotion {
+    private ToucanMotion() {
     }
 
     /**
@@ -74,7 +74,7 @@ public final class toucanMotion {
         if (responsiveness <= 0.0F || deltaTicks <= 0.0F) {
             return 0.0F;
         }
-        return toucanEasing.clamp01(1.0F - (float) Math.exp(-responsiveness * deltaTicks));
+        return ToucanEasing.clamp01(1.0F - (float) Math.exp(-responsiveness * deltaTicks));
     }
 
     /**

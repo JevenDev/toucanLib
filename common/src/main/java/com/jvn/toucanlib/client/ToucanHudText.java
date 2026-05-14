@@ -4,8 +4,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
-public final class toucanHudText {
-    private toucanHudText() {
+public final class ToucanHudText {
+    private ToucanHudText() {
     }
 
     /**
@@ -48,7 +48,7 @@ public final class toucanHudText {
      * Replaces the alpha channel of an ARGB or RGB color.
      */
     public static int withAlpha(int color, int alpha) {
-        return toucanColors.withAlpha(color, alpha);
+        return ToucanColors.withAlpha(color, alpha);
     }
 
     /**
