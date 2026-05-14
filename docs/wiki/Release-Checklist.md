@@ -7,7 +7,7 @@ Use this checklist before publishing or tagging a toucanLib version.
 Check `gradle.properties`:
 
 ```properties
-mod_version=0.1.0
+mod_version=0.1.1
 minecraft_version=1.21.1
 enabled_platforms=fabric,neoforge
 ```

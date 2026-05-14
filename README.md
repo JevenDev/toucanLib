@@ -79,7 +79,7 @@ dependencies {
 }
 ```
 
-Replace `<version>` with the ToucanLib version you want to target. The current project version is `0.1.0`.
+Replace `<version>` with the ToucanLib version you want to target. The current project version is `0.1.1`.
 
 ### Composite-build development
 
