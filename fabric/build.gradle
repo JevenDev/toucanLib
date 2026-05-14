@@ -6,7 +6,7 @@ ext.set("loom.platform", "fabric")
 apply plugin: "dev.architectury.loom"
 
 base {
-    archivesName = rootProject.mod_id + "-" + project.name
+    archivesName = "${rootProject.mod_id}-${project.name}-${rootProject.minecraft_version}"
 }
 
 architectury {

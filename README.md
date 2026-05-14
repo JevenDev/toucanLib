@@ -18,8 +18,8 @@ ToucanLib is structured as an Architectury multi-project build:
 
 The platform jars are written to:
 
-- `fabric/build/libs/toucanlib-fabric-<version>.jar`
-- `neoforge/build/libs/toucanlib-neoforge-<version>.jar`
+- `fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar`
+- `neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar`
 
 ## Notes
 
