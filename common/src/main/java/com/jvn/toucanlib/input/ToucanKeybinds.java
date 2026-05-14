@@ -1,5 +1,6 @@
 package com.jvn.toucanlib.input;
 
+import com.jvn.toucanlib.client.ToucanClientOnly;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public final class ToucanKeybinds {
      * Creates and remembers a key mapping using a caller-selected input type.
      */
     public KeyMapping key(String name, InputConstants.Type inputType, int keyCode) {
+        ToucanClientOnly.requireClient("Key mappings");
         String cleanName = requireIdentifierPart(name, "name");
         KeyMapping mapping = new KeyMapping("key." + modId + "." + cleanName, inputType, keyCode, category);
         keybinds.add(new ToucanKeybind(cleanName, mapping));
@@ -53,6 +55,7 @@ public final class ToucanKeybinds {
      * Registers all remembered mappings through Architectury.
      */
     public void register() {
+        ToucanClientOnly.requireClient("Key mapping registration");
         for (ToucanKeybind keybind : keybinds) {
             KeyMappingRegistry.register(keybind.mapping());
         }

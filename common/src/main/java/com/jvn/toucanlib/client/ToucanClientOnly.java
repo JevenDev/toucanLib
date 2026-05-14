@@ -29,6 +29,15 @@ public final class ToucanClientOnly {
     }
 
     /**
+     * Fails fast when a client-only helper is used outside the physical client.
+     */
+    public static void requireClient(String feature) {
+        if (!isClient()) {
+            throw new IllegalStateException(feature + " can only be used on the physical client");
+        }
+    }
+
+    /**
      * Invokes a public static method by name only on the physical client.
      *
      * @return true when the method was invoked successfully
