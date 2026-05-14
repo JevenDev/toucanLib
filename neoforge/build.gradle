@@ -37,6 +37,10 @@ processResources {
     inputs.property "loader_version_range", rootProject.loader_version_range
     inputs.property "mod_id", rootProject.mod_id
     inputs.property "mod_name", rootProject.mod_name
+    inputs.property "mod_authors", rootProject.mod_authors
+    inputs.property "mod_display_url", rootProject.mod_display_url
+    inputs.property "mod_issue_tracker", rootProject.mod_issue_tracker
+    inputs.property "mod_description", rootProject.mod_description
     inputs.property "mod_license", rootProject.mod_license
     inputs.property "mod_version", project.version
     inputs.property "architectury_version", rootProject.architectury_version
@@ -49,6 +53,10 @@ processResources {
                 loader_version_range: rootProject.loader_version_range,
                 mod_id: rootProject.mod_id,
                 mod_name: rootProject.mod_name,
+                mod_authors: rootProject.mod_authors,
+                mod_display_url: rootProject.mod_display_url,
+                mod_issue_tracker: rootProject.mod_issue_tracker,
+                mod_description: rootProject.mod_description,
                 mod_license: rootProject.mod_license,
                 mod_version: project.version,
                 architectury_version: rootProject.architectury_version

@@ -34,6 +34,10 @@ dependencies {
 processResources {
     inputs.property "mod_id", rootProject.mod_id
     inputs.property "mod_name", rootProject.mod_name
+    inputs.property "mod_authors", rootProject.mod_authors
+    inputs.property "mod_description", rootProject.mod_description
+    inputs.property "mod_display_url", rootProject.mod_display_url
+    inputs.property "mod_issue_tracker", rootProject.mod_issue_tracker
     inputs.property "mod_license", rootProject.mod_license
     inputs.property "mod_version", project.version
     inputs.property "minecraft_version", rootProject.minecraft_version
@@ -45,6 +49,10 @@ processResources {
         expand(
                 mod_id: rootProject.mod_id,
                 mod_name: rootProject.mod_name,
+                mod_authors: rootProject.mod_authors,
+                mod_description: rootProject.mod_description,
+                mod_display_url: rootProject.mod_display_url,
+                mod_issue_tracker: rootProject.mod_issue_tracker,
                 mod_license: rootProject.mod_license,
                 mod_version: project.version,
                 minecraft_version: rootProject.minecraft_version,
