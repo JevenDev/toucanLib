@@ -136,6 +136,35 @@ The platform jars are written to:
 - `fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar`
 - `neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar`
 
+## CurseForge Releases
+
+ToucanLib now includes a root Gradle task for CurseForge uploads.
+
+Set your token in the environment:
+
+```powershell
+$env:CURSEFORGE_API_TOKEN="your-token-here"
+```
+
+Then preview the resolved release plan:
+
+```sh
+./gradlew printCurseForgeReleasePlan
+```
+
+Then publish both loader jars:
+
+```sh
+./gradlew publishCurseForge
+```
+
+Useful overrides:
+
+- `-PcurseforgeReleaseType=alpha|beta|release`
+- `-PcurseforgeChangelog="..."` to replace the default changelog text
+
+The project id is currently stored in `gradle.properties` as `curseforge_project_id`.
+
 ## Notes
 
 The common module depends on Architectury API. Key mapping registration and physical-side checks already use Architectury wrappers, while NeoForge-specific networking, GUI layer, and config screen helpers remain under `com.jvn.toucanlib.neoforge.*` until matching cross-loader abstractions are added.

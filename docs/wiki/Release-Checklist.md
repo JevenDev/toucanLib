@@ -74,6 +74,19 @@ Suggested release order:
 4. Upload/publish Fabric and NeoForge artifacts.
 5. Update consuming mods to the new toucanLib version.
 
+For CurseForge releases:
+
+```powershell
+$env:CURSEFORGE_API_TOKEN="your-token-here"
+.\gradlew printCurseForgeReleasePlan
+.\gradlew publishCurseForge
+```
+
+Optional overrides:
+
+- `-PcurseforgeReleaseType=alpha|beta|release`
+- `-PcurseforgeChangelog="..."` for a one-off changelog body
+
 ## 7. Post-release notes
 
 Record notable changes in the GitHub release body:

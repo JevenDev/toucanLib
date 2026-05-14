@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 plugins {
     id "architectury-plugin" version "3.5.166"
     id "dev.architectury.loom" version "1.14.473" apply false
@@ -60,5 +63,197 @@ publishing {
         maven {
             url = uri("${project.projectDir}/repo")
         }
+    }
+}
+
+def curseForgeVersionTypeId = [
+        minecraft: 77784,
+        modloader: 68441
+]
+
+def curseForgeProjectId = providers.gradleProperty("curseforgeProjectId")
+        .orElse(providers.gradleProperty("curseforge_project_id"))
+
+def curseForgeApiToken = providers.gradleProperty("curseforgeApiToken")
+        .orElse(providers.environmentVariable("CURSEFORGE_API_TOKEN"))
+
+def curseForgeReleaseType = providers.gradleProperty("curseforgeReleaseType")
+        .orElse("release")
+
+def curseForgeChangelog = providers.gradleProperty("curseforgeChangelog")
+        .orElse(providers.fileContents(layout.projectDirectory.file("CHANGELOG_CURSEFORGE.md")).asText)
+        .orElse("""
+ToucanLib ${project.version}
+
+- Release for Minecraft ${project.minecraft_version}
+- Includes Fabric and NeoForge platform jars
+""".stripIndent().trim())
+
+def curseForgeApiHeaders = { String apiToken ->
+    [
+            "X-Api-Token": apiToken,
+            "Accept"     : "application/json"
+    ]
+}
+
+def curseForgeReadJson = { String apiToken, String url ->
+    HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection()
+    curseForgeApiHeaders(apiToken).each { key, value -> connection.setRequestProperty(key, value) }
+    connection.requestMethod = "GET"
+    connection.connect()
+
+    int responseCode = connection.responseCode
+    InputStream stream = responseCode >= 200 && responseCode < 300 ? connection.inputStream : connection.errorStream
+    String body = stream?.getText("UTF-8") ?: ""
+    if (responseCode < 200 || responseCode >= 300) {
+        throw new GradleException("CurseForge API request failed (${responseCode}) for ${url}\n${body}")
+    }
+    new JsonSlurper().parseText(body)
+}
+
+def curseForgeLookupVersionId = { List versions, int typeId, String name ->
+    def match = versions.find { version ->
+        version.gameVersionTypeID == typeId && version.name == name
+    }
+    if (match == null) {
+        throw new GradleException("Could not find CurseForge game version '${name}' for type ${typeId}")
+    }
+    match.id as int
+}
+
+def curseForgeUpload = { Map config ->
+    String apiToken = config.apiToken
+    Integer projectId = config.projectId as Integer
+    File artifact = config.artifact as File
+    List<Integer> gameVersionIds = (config.gameVersionIds as List<Integer>)
+    String displayName = config.displayName as String
+    String releaseType = config.releaseType as String
+    String changelog = config.changelog as String
+
+    if (!artifact.isFile()) {
+        throw new GradleException("CurseForge artifact not found: ${artifact}")
+    }
+
+    String metadata = JsonOutput.toJson([
+            changelog    : changelog,
+            changelogType: "markdown",
+            displayName  : displayName,
+            gameVersions : gameVersionIds,
+            releaseType  : releaseType
+    ])
+
+    String boundary = "------------------------${UUID.randomUUID().toString().replace("-", "")}"
+    String lineBreak = "\r\n"
+    ByteArrayOutputStream body = new ByteArrayOutputStream()
+
+    body.write(("--${boundary}${lineBreak}").getBytes("UTF-8"))
+    body.write(("Content-Disposition: form-data; name=\"metadata\"${lineBreak}${lineBreak}").getBytes("UTF-8"))
+    body.write(metadata.getBytes("UTF-8"))
+    body.write(lineBreak.getBytes("UTF-8"))
+
+    body.write(("--${boundary}${lineBreak}").getBytes("UTF-8"))
+    body.write(("Content-Disposition: form-data; name=\"file\"; filename=\"${artifact.name}\"${lineBreak}").getBytes("UTF-8"))
+    body.write(("Content-Type: application/java-archive${lineBreak}${lineBreak}").getBytes("UTF-8"))
+    artifact.withInputStream { input -> body << input }
+    body.write(lineBreak.getBytes("UTF-8"))
+    body.write(("--${boundary}--${lineBreak}").getBytes("UTF-8"))
+
+    HttpURLConnection connection = (HttpURLConnection) new URL("https://minecraft.curseforge.com/api/projects/${projectId}/upload-file").openConnection()
+    connection.requestMethod = "POST"
+    connection.doOutput = true
+    curseForgeApiHeaders(apiToken).each { key, value -> connection.setRequestProperty(key, value) }
+    connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=${boundary}")
+    connection.outputStream.withCloseable { output -> output.write(body.toByteArray()) }
+
+    int responseCode = connection.responseCode
+    InputStream stream = responseCode >= 200 && responseCode < 300 ? connection.inputStream : connection.errorStream
+    String responseBody = stream?.getText("UTF-8") ?: ""
+    if (responseCode < 200 || responseCode >= 300) {
+        throw new GradleException("CurseForge upload failed (${responseCode}) for ${artifact.name}\n${responseBody}")
+    }
+
+    new JsonSlurper().parseText(responseBody)
+}
+
+tasks.register("printCurseForgeReleasePlan") {
+    group = "publishing"
+    description = "Prints the current CurseForge release plan for ToucanLib."
+    dependsOn "build"
+
+    doLast {
+        String apiToken = curseForgeApiToken.orNull
+        String projectId = curseForgeProjectId.orNull
+        if (!apiToken) {
+            throw new GradleException("Missing CurseForge API token. Set CURSEFORGE_API_TOKEN or -PcurseforgeApiToken.")
+        }
+        if (!projectId) {
+            throw new GradleException("Missing CurseForge project id. Set curseforge_project_id in gradle.properties or -PcurseforgeProjectId.")
+        }
+
+        def versions = curseForgeReadJson(apiToken, "https://minecraft.curseforge.com/api/game/versions")
+        int minecraftVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.minecraft, project.minecraft_version)
+        int fabricVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.modloader, "Fabric")
+        int neoForgeVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.modloader, "NeoForge")
+
+        File fabricJar = project(":fabric").tasks.named("remapJar").get().archiveFile.get().asFile
+        File neoForgeJar = project(":neoforge").tasks.named("remapJar").get().archiveFile.get().asFile
+
+        println "CurseForge project: ${projectId}"
+        println "Release type: ${curseForgeReleaseType.get()}"
+        println "Minecraft tag: ${project.minecraft_version} -> ${minecraftVersionId}"
+        println "Fabric tag: Fabric -> ${fabricVersionId}"
+        println "NeoForge tag: NeoForge -> ${neoForgeVersionId}"
+        println "Fabric artifact: ${fabricJar}"
+        println "NeoForge artifact: ${neoForgeJar}"
+    }
+}
+
+tasks.register("publishCurseForge") {
+    group = "publishing"
+    description = "Builds and uploads the Fabric and NeoForge ToucanLib jars to CurseForge."
+    dependsOn "build"
+
+    doLast {
+        String apiToken = curseForgeApiToken.orNull
+        String projectId = curseForgeProjectId.orNull
+        if (!apiToken) {
+            throw new GradleException("Missing CurseForge API token. Set CURSEFORGE_API_TOKEN or -PcurseforgeApiToken.")
+        }
+        if (!projectId) {
+            throw new GradleException("Missing CurseForge project id. Set curseforge_project_id in gradle.properties or -PcurseforgeProjectId.")
+        }
+
+        def versions = curseForgeReadJson(apiToken, "https://minecraft.curseforge.com/api/game/versions")
+        int minecraftVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.minecraft, project.minecraft_version)
+        int fabricVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.modloader, "Fabric")
+        int neoForgeVersionId = curseForgeLookupVersionId(versions, curseForgeVersionTypeId.modloader, "NeoForge")
+
+        File fabricJar = project(":fabric").tasks.named("remapJar").get().archiveFile.get().asFile
+        File neoForgeJar = project(":neoforge").tasks.named("remapJar").get().archiveFile.get().asFile
+
+        def releaseNotes = curseForgeChangelog.get()
+
+        def fabricResult = curseForgeUpload(
+                apiToken: apiToken,
+                projectId: projectId,
+                artifact: fabricJar,
+                gameVersionIds: [minecraftVersionId, fabricVersionId],
+                displayName: "ToucanLib Fabric ${project.minecraft_version} - ${project.version}",
+                releaseType: curseForgeReleaseType.get(),
+                changelog: releaseNotes
+        )
+
+        def neoForgeResult = curseForgeUpload(
+                apiToken: apiToken,
+                projectId: projectId,
+                artifact: neoForgeJar,
+                gameVersionIds: [minecraftVersionId, neoForgeVersionId],
+                displayName: "ToucanLib NeoForge ${project.minecraft_version} - ${project.version}",
+                releaseType: curseForgeReleaseType.get(),
+                changelog: releaseNotes
+        )
+
+        println "Uploaded Fabric file id: ${fabricResult.id}"
+        println "Uploaded NeoForge file id: ${neoForgeResult.id}"
     }
 }
