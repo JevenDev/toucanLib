@@ -2,6 +2,12 @@
 
 Small shared multi-loader utility helpers for JVN mods.
 
+## Wiki
+
+Project documentation lives in [`docs/wiki/Home.md`](docs/wiki/Home.md).
+
+Start there for setup notes, architecture, current API surface, development standards, and the release checklist.
+
 ## Loaders
 
 ToucanLib is structured as an Architectury multi-project build:
