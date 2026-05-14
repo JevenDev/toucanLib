@@ -34,12 +34,13 @@ neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar
 
 ## Adding ToucanLib to another mod workspace
 
-ToucanLib is not published to a remote Maven yet. The supported workflows right now are:
+ToucanLib is publicly available on CurseForge, and the supported development workflows right now are:
 
+- download the published Fabric or NeoForge jar from CurseForge when you want the public release artifact
 - publish the artifacts to this repository's local `repo/` Maven with `./gradlew publish`
 - use a composite build when ToucanLib and the consuming mod live in the same workspace neighborhood
 
-See the root [`README.md`](../../README.md) for the current repository and dependency snippets.
+See the root [`README.md`](../../README.md) for the current public-usage notes and dependency snippets.
 
 ## Versioning expectations
 

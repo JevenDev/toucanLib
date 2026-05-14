@@ -18,12 +18,32 @@ ToucanLib is structured as an Architectury multi-project build:
 
 ## Adding ToucanLib to Your Project
 
-ToucanLib currently supports both Fabric and NeoForge, but this repository does not publish to Modrinth Maven or another remote Maven yet.
+ToucanLib currently supports both Fabric and NeoForge and is now publicly published on CurseForge.
 
-Today there are two supported consumption workflows:
+Today there are three practical consumption workflows:
 
-1. Use a composite build while developing ToucanLib and your mod side by side.
-2. Publish ToucanLib to this repo's local file Maven and depend on the loader-specific artifact from there.
+1. Download the matching ToucanLib jar from CurseForge and ship or test against it as a normal library mod.
+2. Use a composite build while developing ToucanLib and your mod side by side.
+3. Publish ToucanLib to this repo's local file Maven and depend on the loader-specific artifact from there.
+
+### Public CurseForge download
+
+The simplest public way to use ToucanLib today is through the CurseForge project:
+
+- install the matching Fabric or NeoForge ToucanLib jar in your modpack or development runtime
+- use the same published jar when testing integration with your own mod
+
+This is the most reliable public distribution path right now.
+
+### Public developer dependency note
+
+CurseForge does expose a Maven-style endpoint, but its coordinates are based on the project slug and uploaded filename layout rather than the cleaner group/artifact/version pattern most mod developers expect.
+
+Because of that, the recommended developer workflows today are:
+
+- use the published CurseForge jar directly for runtime testing
+- use a composite build when working side-by-side with ToucanLib
+- use the local `repo/` Maven published by this repository when you want conventional Gradle coordinates
 
 ### Local Maven repository
 
