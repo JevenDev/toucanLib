@@ -3,6 +3,9 @@ package com.jvn.toucanlib.client;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
+/**
+ * Motion and smoothing helpers for client animation state.
+ */
 public final class ToucanMotion {
     private ToucanMotion() {
     }

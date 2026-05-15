@@ -11,6 +11,9 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+/**
+ * Thin NeoForge payload registration wrapper with safe client dispatch helpers.
+ */
 public final class ToucanNetwork {
     private final String modId;
     private final PayloadRegistrar registrar;

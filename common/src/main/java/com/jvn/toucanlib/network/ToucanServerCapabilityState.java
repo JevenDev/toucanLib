@@ -3,6 +3,10 @@ package com.jvn.toucanlib.network;
 import com.jvn.toucanlib.ToucanLib;
 import org.slf4j.Logger;
 
+/**
+ * Tracks optional server support for a consuming mod that can run with or
+ * without a ToucanLib-backed server handshake.
+ */
 public final class ToucanServerCapabilityState {
     private final String modId;
     private final Logger logger;

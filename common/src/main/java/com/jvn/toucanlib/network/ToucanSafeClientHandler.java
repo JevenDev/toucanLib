@@ -4,6 +4,10 @@ import com.jvn.toucanlib.ToucanLib;
 import com.jvn.toucanlib.client.ToucanClientOnly;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
+/**
+ * Dispatches network payloads to client-only handler classes without loading
+ * those classes on a dedicated server.
+ */
 public final class ToucanSafeClientHandler {
     private ToucanSafeClientHandler() {
     }

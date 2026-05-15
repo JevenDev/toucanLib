@@ -7,7 +7,7 @@ Use this checklist before publishing or tagging a toucanLib version.
 Check `gradle.properties`:
 
 ```properties
-mod_version=0.1.2
+mod_version=0.1.3
 minecraft_version=1.21.1
 enabled_platforms=fabric,neoforge
 ```
@@ -32,6 +32,8 @@ Confirm the expected jars exist:
 fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar
 neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar
 ```
+
+Also confirm sources and Javadoc jars are present for the platform artifacts. Published releases should include source jars so consuming projects and IDEs can inspect ToucanLib APIs directly.
 
 ## 3. Smoke test consuming mods
 
@@ -87,7 +89,18 @@ Optional overrides:
 - `-PcurseforgeReleaseType=alpha|beta|release`
 - `-PcurseforgeChangelog="..."` for a one-off changelog body
 
-## 7. Post-release notes
+## 7. Verify consumer dependency safety
+
+Before updating consuming mods, confirm release/CI builds do not use:
+
+- local ToucanLib paths
+- `flatDir`
+- `mavenLocal()` unless guarded behind an explicit local development property
+- relative local jars
+
+CI should resolve ToucanLib from CurseMaven now, or Modrinth Maven once available.
+
+## 8. Post-release notes
 
 Record notable changes in the GitHub release body:
 

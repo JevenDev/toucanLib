@@ -7,6 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+/**
+ * Physical-client guards and safe reflective dispatch helpers.
+ */
 public final class ToucanClientOnly {
     private ToucanClientOnly() {
     }

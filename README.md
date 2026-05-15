@@ -2,153 +2,201 @@
 
 # ToucanLib
 
-Small shared multi-loader utility helpers for JVN mods.
+ToucanLib is a lightweight shared helper/API library for jvn's Minecraft mods. It contains small reusable helpers for repeated setup, UI, networking, and utility code across projects.
 
-## Wiki
+## Supported Versions
 
-Project documentation lives in [`docs/wiki/Home.md`](docs/wiki/Home.md).
+| Minecraft | Loader | Status |
+| --- | --- | --- |
+| 1.21.1 | NeoForge | Supported |
+| 1.21.1 | Fabric | Supported |
 
-Start there for setup notes, architecture, current API surface, development standards, and the release checklist.
+ToucanLib is an Architectury multi-project build:
 
-## Loaders
+- `common` contains loader-neutral helpers and shared resources.
+- `fabric` contains the Fabric entrypoint and metadata.
+- `neoforge` contains the NeoForge entrypoint, metadata, and NeoForge-only helper APIs.
 
-ToucanLib is structured as an Architectury multi-project build:
+## For Players
 
-- `common` contains loader-neutral code and shared resources.
-- `fabric` contains the Fabric entrypoint and Fabric metadata.
-- `neoforge` contains the NeoForge entrypoint, NeoForge metadata, and NeoForge-only helper APIs.
+ToucanLib is a required dependency for some of my (jvn) mods. It usually does not add gameplay on its own; install the matching Fabric or NeoForge jar when another mod asks for ToucanLib.
 
-## Adding ToucanLib to Your Project
+## For Developers
 
-ToucanLib currently supports both Fabric and NeoForge and is now publicly published on CurseForge.
+Use a released ToucanLib artifact for CI and releases. Local builds are useful while actively developing ToucanLib, but they should be opt-in and never be the default dependency path for a consuming mod.
 
-Today there are three practical consumption workflows:
+### Using CurseMaven
 
-1. Download the matching ToucanLib jar from CurseForge and ship or test against it as a normal library mod.
-2. Use a composite build while developing ToucanLib and your mod side by side.
-3. Publish ToucanLib to this repo's local file Maven and depend on the loader-specific artifact from there.
-
-### Public CurseForge download
-
-The simplest public way to use ToucanLib today is through the CurseForge project:
-
-- install the matching Fabric or NeoForge ToucanLib jar in your modpack or development runtime
-- use the same published jar when testing integration with your own mod
-
-This is the most reliable public distribution path right now.
-
-### Public developer dependency note
-
-CurseForge does expose a Maven-style endpoint, but its coordinates are based on the project slug and uploaded filename layout rather than the cleaner group/artifact/version pattern most mod developers expect.
-
-Because of that, the recommended developer workflows today are:
-
-- use the published CurseForge jar directly for runtime testing
-- use a composite build when working side-by-side with ToucanLib
-- use the local `repo/` Maven published by this repository when you want conventional Gradle coordinates
-
-### Local Maven repository
-
-From the ToucanLib repository root:
-
-```sh
-./gradlew publish
-```
-
-That publishes artifacts to:
-
-```text
-./repo
-```
-
-Then add that repository in the consuming mod:
+CurseMaven is the working public Gradle option while Modrinth approval is pending. The current public CurseMaven coordinate for the NeoForge 1.21.1 file is:
 
 ```gradle
 repositories {
     maven {
-        name = "ToucanLib Local"
-        url = uri("../toucanLib/repo")
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+dependencies {
+    modImplementation "curse.maven:toucanlib-1542666:8089151"
+}
+```
+
+Use `implementation` instead of `modImplementation` if your Gradle setup expects normal Java dependencies, such as some ModDevGradle configurations. CurseMaven coordinates are file-id based, so update the trailing file id when targeting a newer uploaded ToucanLib file.
+
+### Using Modrinth Maven
+
+Modrinth Maven should become the preferred public dependency path after the Modrinth project is approved.
+
+```gradle
+repositories {
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+dependencies {
+    modImplementation "maven.modrinth:toucanlib:<version>"
+}
+```
+
+Replace `<version>` with the published Modrinth version once it exists.
+
+### Optional Local Development Override
+
+Only enable local ToucanLib resolution when you are actively developing ToucanLib and a consuming mod at the same time.
+
+```gradle
+def useLocalToucanLib = providers
+        .gradleProperty("useLocalToucanLib")
+        .map { it.toBoolean() }
+        .orElse(false)
+        .get()
+
+repositories {
+    if (useLocalToucanLib) {
+        mavenLocal()
+    }
+
+    maven {
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+dependencies {
+    if (useLocalToucanLib) {
+        modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:0.1.3"
+    } else {
+        modImplementation "curse.maven:toucanlib-1542666:8089151"
     }
 }
 ```
 
-### Loader-specific dependencies
+Do not enable `useLocalToucanLib` in CI or release builds. Release builds should always resolve ToucanLib from CurseMaven now, or Modrinth Maven once it is available.
 
-Most consuming mods should depend on the matching loader jar, not the `common` module directly.
+### Recommended CI Rule
 
-Fabric / Loom:
+Consuming mods should fail CI if they accidentally depend on:
 
-```gradle
-dependencies {
-    modImplementation "com.jvn.toucanlib:toucanlib-fabric-1.21.1:<version>"
-}
+- local ToucanLib paths
+- `flatDir`
+- `mavenLocal()` without an explicit local development property
+- relative local jars
+
+Release and publish workflows should resolve ToucanLib from CurseMaven or Modrinth Maven only. This prevents local workspace state from leaking into builds that are meant to be reproducible.
+
+## API Surface
+
+ToucanLib is still in `0.x`, so public helpers are usable but provisional. Breaking changes may happen before `1.0.0`; changes should still be documented and made carefully.
+
+Current package boundaries:
+
+```text
+com.jvn.toucanlib              Shared core constants and initialization
+com.jvn.toucanlib.client       Public client-side helper APIs
+com.jvn.toucanlib.input        Public keybind helper APIs
+com.jvn.toucanlib.network      Public/provisional network helper APIs
+com.jvn.toucanlib.util         Public utility APIs
+com.jvn.toucanlib.neoforge     NeoForge entrypoint and NeoForge-only helpers
+com.jvn.toucanlib.fabric       Fabric entrypoint; not a stable API surface
 ```
 
-NeoForge / Architectury Loom:
+Anything documented in the root, `client`, `input`, `network`, or `util` packages should be treated as public but early API. NeoForge helper classes under `com.jvn.toucanlib.neoforge.*` are public only for NeoForge consumers and may change if cross-loader equivalents are added later. Platform entrypoint classes are implementation details.
 
-```gradle
-dependencies {
-    modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:<version>"
-}
-```
+Once ToucanLib reaches `1.0.0`, documented public packages should be treated as stable. Future `impl`, `internal`, or `experimental` packages should be treated as unstable and may change without notice.
 
-NeoForge / ModDevGradle:
+## Example Usage
 
-```gradle
-dependencies {
-    implementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:<version>"
-    localRuntime "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:<version>"
-}
-```
-
-Replace `<version>` with the ToucanLib version you want to target. The current project version is `0.1.2`.
-
-### Composite-build development
-
-If your consuming mod lives beside this repository, you can wire ToucanLib in as an included build instead of publishing jars by hand:
-
-```gradle
-includeBuild("../toucanLib") {
-    dependencySubstitution {
-        substitute module("com.jvn.toucanlib:toucanlib") using project(":common")
-        substitute module("com.jvn.toucanlib:toucanlib-neoforge-1.21.1") using project(":neoforge")
-    }
-}
-```
-
-Add a Fabric substitution too if your consuming workspace targets Fabric.
-
-### Example Java usage
+### Resource IDs
 
 ```java
-import com.jvn.toucanlib.ToucanLib;
-import com.jvn.toucanlib.client.ToucanColors;
-import com.jvn.toucanlib.client.ToucanEasing;
-import com.jvn.toucanlib.client.ToucanHudAnchor;
-import com.jvn.toucanlib.client.ToucanScreenRect;
 import com.jvn.toucanlib.util.ToucanIds;
-import com.jvn.toucanlib.util.ToucanResourceLocations;
 import net.minecraft.resources.ResourceLocation;
 
-ResourceLocation icon = ToucanResourceLocations.id(ToucanLib.MOD_ID, "textures/gui/example.png");
 ToucanIds ids = ToucanIds.create("examplemod");
-ResourceLocation namespacedIcon = ids.texture("gui/example.png");
-int accent = ToucanColors.withAlpha(0x00FFC850, 255);
-float eased = ToucanEasing.smoothstep(0.6F);
-ToucanScreenRect rect = new ToucanScreenRect(12, 12, 24, 24);
-ToucanHudAnchor anchor = ToucanHudAnchor.TOP_RIGHT;
+ResourceLocation blockId = ids.id("example_block");
+ResourceLocation icon = ids.texture("gui/example_icon.png");
 ```
 
-## Install Mode Notes
+### Client Colors And Animation
 
-ToucanLib is a loader-specific mod dependency. Install the matching Fabric or NeoForge jar on every side where your consuming mod actually loads ToucanLib classes.
+```java
+import com.jvn.toucanlib.client.ToucanColors;
+import com.jvn.toucanlib.client.ToucanEasing;
+import com.jvn.toucanlib.client.ToucanMotion;
 
-- Pure client helpers such as colors, easing, HUD layout, and client-only reflection helpers are safe for client-side use.
-- Shared or network-oriented integrations should be present on both sides when your mod expects server-authoritative behavior.
-- `ToucanInstallMode.CLIENT_LOCAL_ONLY` means the client is using fallback behavior without a server handshake.
-- `ToucanInstallMode.SERVER_AUTHORITATIVE` and `ToucanInstallMode.INTEGRATED_SERVER_AUTHORITATIVE` mean the remote or integrated server confirmed support and now owns the authoritative state.
+int translucentWhite = ToucanColors.withAlpha(0x00FFFFFF, 128);
+float eased = ToucanEasing.smoothstep(0.6F);
+float x = ToucanMotion.approach(currentX, targetX, 0.5F);
+```
 
-`ToucanServerCapabilityState` and `ToucanSafeClientHandler` are helper APIs for optional capability negotiation and safe client dispatch. They do not automatically install or synchronize ToucanLib for you.
+### HUD Layout
+
+```java
+import com.jvn.toucanlib.client.ToucanHudAnchor;
+import com.jvn.toucanlib.client.ToucanHudAnchors;
+import com.jvn.toucanlib.client.ToucanScreenRect;
+
+ToucanScreenRect rect = ToucanHudAnchors.rect(
+        ToucanHudAnchor.TOP_RIGHT,
+        screenWidth,
+        screenHeight,
+        96,
+        18,
+        8,
+        8
+);
+```
+
+### NeoForge Event Wiring
+
+```java
+import com.jvn.toucanlib.neoforge.event.ToucanEventBuses;
+
+ToucanEventBuses.on(modEventBus)
+        .listener(ModEvents::registerThings);
+
+ToucanEventBuses.game()
+        .listener(GameEvents::onTick);
+```
+
+## Versioning
+
+- `0.x` versions are early API development.
+- Breaking changes may happen before `1.0.0`.
+- Public API should still be documented and changed carefully.
+- `1.0.0` means documented public API is expected to remain stable.
 
 ## Building
 
@@ -156,14 +204,24 @@ ToucanLib is a loader-specific mod dependency. Install the matching Fabric or Ne
 ./gradlew build
 ```
 
+On Windows PowerShell:
+
+```powershell
+.\gradlew build
+```
+
 The platform jars are written to:
 
-- `fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar`
-- `neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar`
+```text
+fabric/build/libs/toucanlib-fabric-<minecraft-version>-<version>.jar
+neoforge/build/libs/toucanlib-neoforge-<minecraft-version>-<version>.jar
+```
+
+The build also produces sources and Javadoc jars for published artifacts.
 
 ## CurseForge Releases
 
-ToucanLib now includes a root Gradle task for CurseForge uploads.
+ToucanLib includes root Gradle tasks for CurseForge uploads.
 
 Set your token in the environment:
 
@@ -188,8 +246,8 @@ Useful overrides:
 - `-PcurseforgeReleaseType=alpha|beta|release`
 - `-PcurseforgeChangelog="..."` to replace the default changelog text
 
-The project id is currently stored in `gradle.properties` as `curseforge_project_id`.
+The project id is stored in `gradle.properties` as `curseforge_project_id`.
 
-## Notes
+## Wiki
 
-The common module depends on Architectury API. Key mapping registration and physical-side checks already use Architectury wrappers, while NeoForge-specific networking, GUI layer, and config screen helpers remain under `com.jvn.toucanlib.neoforge.*` until matching cross-loader abstractions are added.
+Additional project documentation lives in [`docs/wiki/Home.md`](docs/wiki/Home.md), including architecture notes, development standards, API notes, and the release checklist.

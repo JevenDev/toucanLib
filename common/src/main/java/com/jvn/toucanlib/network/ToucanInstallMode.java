@@ -1,5 +1,9 @@
 package com.jvn.toucanlib.network;
 
+/**
+ * Describes whether a consuming mod should trust server-side state or use a
+ * client-only fallback.
+ */
 public enum ToucanInstallMode {
     UNKNOWN_HANDSHAKE_PENDING,
     CLIENT_LOCAL_ONLY,

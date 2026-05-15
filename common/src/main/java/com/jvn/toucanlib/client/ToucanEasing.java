@@ -2,6 +2,9 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
+/**
+ * Small easing functions for animation progress values in the range {@code 0..1}.
+ */
 public final class ToucanEasing {
     private ToucanEasing() {
     }

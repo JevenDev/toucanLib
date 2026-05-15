@@ -4,10 +4,10 @@ ToucanLib is structured as an Architectury multi-project repository.
 
 ```text
 ToucanLib/
-├─ common/      shared loader-neutral source and resources
-├─ fabric/      Fabric entrypoint and Fabric metadata
-├─ neoforge/    NeoForge entrypoint, metadata, and NeoForge-only helpers
-└─ docs/wiki/   source-controlled project wiki
+|-- common/      shared loader-neutral source and resources
+|-- fabric/      Fabric entrypoint and Fabric metadata
+|-- neoforge/    NeoForge entrypoint, metadata, and NeoForge-only helpers
+`-- docs/wiki/   source-controlled project wiki
 ```
 
 ## Module responsibilities
@@ -32,26 +32,29 @@ Current responsibility:
 
 - Fabric `ModInitializer` entrypoint that calls `ToucanLib.init()`
 
-Future responsibilities may include Fabric-specific adapters for shared abstractions.
+The Fabric entrypoint package is implementation detail unless a future helper is explicitly documented as public API.
 
 ### `neoforge`
 
 Use `neoforge` for NeoForge-specific bootstrap and APIs.
 
-Current responsibility:
+Current responsibilities:
 
 - NeoForge `@Mod(ToucanLib.MOD_ID)` entrypoint that calls `ToucanLib.init()`
+- NeoForge-only networking, event bus, GUI layer, and config screen helper APIs
 
-The README notes that NeoForge-specific networking, GUI layer, and config screen helpers currently remain under `com.jvn.toucanlib.neoforge.*` until matching cross-loader abstractions are added.
+Keep NeoForge helper shapes narrow so cross-loader equivalents can be added later without breaking consumers.
 
 ## Initialization flow
 
 Both platform entrypoints delegate into the common initializer:
 
 ```text
-Fabric ModInitializer ─┐
-                       ├─ ToucanLib.init()
-NeoForge @Mod class ───┘
+Fabric ModInitializer
+        |
+        +--> ToucanLib.init()
+        |
+NeoForge @Mod class
 ```
 
 Keep `ToucanLib.init()` safe to call from both loaders. It should only perform shared initialization or dispatch into loader-specific code through explicit platform adapters.
@@ -64,20 +67,19 @@ Use the root group:
 com.jvn.toucanlib
 ```
 
-Suggested package layout:
+Current package layout:
 
 ```text
 com.jvn.toucanlib
-com.jvn.toucanlib.api
 com.jvn.toucanlib.client
-com.jvn.toucanlib.config
+com.jvn.toucanlib.input
 com.jvn.toucanlib.network
-com.jvn.toucanlib.platform
+com.jvn.toucanlib.util
 com.jvn.toucanlib.fabric
 com.jvn.toucanlib.neoforge
 ```
 
-Public reusable helpers should live in clearly named `api` or feature packages. Internal implementation details should avoid looking like stable public API.
+Future internal implementation should use explicit package names such as `internal`, `impl`, or `experimental` so consuming mods do not mistake it for stable API.
 
 ## Cross-loader rule of thumb
 

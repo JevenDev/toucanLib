@@ -5,6 +5,9 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 
+/**
+ * Convenience wrappers for registering NeoForge GUI layers with ToucanLib-style ids.
+ */
 public final class ToucanGuiLayers {
     private ToucanGuiLayers() {
     }

@@ -1,5 +1,8 @@
 package com.jvn.toucanlib.client;
 
+/**
+ * Resolves {@link ToucanHudAnchor} values into screen coordinates.
+ */
 public final class ToucanHudAnchors {
     private ToucanHudAnchors() {
     }

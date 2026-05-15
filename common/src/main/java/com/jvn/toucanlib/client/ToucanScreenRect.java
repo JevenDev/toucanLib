@@ -1,5 +1,8 @@
 package com.jvn.toucanlib.client;
 
+/**
+ * Immutable integer rectangle for screen-space layout and hit testing.
+ */
 public record ToucanScreenRect(int x, int y, int width, int height) {
     public ToucanScreenRect {
         if (width < 0) {

@@ -2,6 +2,9 @@ package com.jvn.toucanlib.input;
 
 import net.minecraft.client.KeyMapping;
 
+/**
+ * Named key mapping remembered by {@link ToucanKeybinds}.
+ */
 public record ToucanKeybind(String name, KeyMapping mapping) {
     public ToucanKeybind {
         if (name == null || name.isBlank()) {

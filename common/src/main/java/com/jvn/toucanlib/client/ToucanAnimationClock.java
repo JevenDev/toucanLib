@@ -2,6 +2,9 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
+/**
+ * Small mutable tick clock for client animations that need clamped progress.
+ */
 public final class ToucanAnimationClock {
     private int ticks;
 

@@ -2,6 +2,9 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.util.Mth;
 
+/**
+ * Color helpers for packed ARGB/RGB integer values.
+ */
 public final class ToucanColors {
     private ToucanColors() {
     }

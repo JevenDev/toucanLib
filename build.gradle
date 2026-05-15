@@ -46,11 +46,17 @@ allprojects {
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
         withSourcesJar()
+        withJavadocJar()
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.release = 21
+    }
+
+    tasks.withType(Javadoc).configureEach {
+        options.encoding = "UTF-8"
+        options.addStringOption("Xdoclint:none", "-quiet")
     }
 
     tasks.withType(Test).configureEach {

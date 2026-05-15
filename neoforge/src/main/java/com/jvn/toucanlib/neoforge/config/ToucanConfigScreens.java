@@ -5,6 +5,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
+/**
+ * Convenience wrappers for registering NeoForge config screens.
+ */
 public final class ToucanConfigScreens {
     private ToucanConfigScreens() {
     }

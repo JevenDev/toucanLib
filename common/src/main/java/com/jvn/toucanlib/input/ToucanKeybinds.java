@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.KeyMapping;
 
+/**
+ * Builder-style helper for declaring and registering a mod's key mappings.
+ */
 public final class ToucanKeybinds {
     private final String modId;
     private final String category;

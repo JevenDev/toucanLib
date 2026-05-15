@@ -11,7 +11,7 @@ toucanLib is a small shared utility library for jvn's (that's me :D) Minecraft m
 | Platforms | Fabric, NeoForge    |
 | Mod ID | `toucanlib`         |
 | Package group | `com.jvn.toucanlib` |
-| Current version | `0.1.2`             |
+| Current version | `0.1.3`             |
 
 ## Wiki pages
 
@@ -20,6 +20,10 @@ toucanLib is a small shared utility library for jvn's (that's me :D) Minecraft m
 - [API Surface](API-Surface.md)
 - [Development](Development.md)
 - [Release Checklist](Release-Checklist.md)
+
+## Developer dependency guidance
+
+Use the released CurseMaven artifact for consuming mod CI and release builds. Modrinth Maven should become the preferred public Gradle path once the Modrinth project is approved. Local ToucanLib builds, `mavenLocal()`, `flatDir`, and relative jars should only be used behind an explicit local development override.
 
 ## What belongs in toucanLib?
 

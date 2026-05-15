@@ -51,6 +51,17 @@ com.jvn.toucanlib.neoforge.*
 
 If a helper starts as NeoForge-only but may become cross-loader later, keep the public shape narrow so a Fabric implementation can be added without breaking consumers.
 
+## Public API documentation
+
+When a helper is intended for consuming mods:
+
+- add class-level Javadocs or package-level documentation
+- document loader assumptions, especially physical-client or NeoForge-only behavior
+- keep experimental or one-mod-specific helpers out of stable public docs
+- update [API Surface](API-Surface.md)
+
+Do not present half-finished helpers as stable API. If a helper is still proving itself, document it as provisional while ToucanLib remains in `0.x`.
+
 ## Commit style
 
 Use short, human commit messages:
@@ -72,6 +83,7 @@ Before shipping a toucanLib change:
 - no mod-specific logic has leaked into the library
 - any new helper has a clear package and lifecycle expectation
 - consuming mods still launch with the updated jar
+- sources and Javadoc jars are produced for published artifacts
 
 ## Documentation checklist
 

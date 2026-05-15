@@ -1,5 +1,8 @@
 package com.jvn.toucanlib.client;
 
+/**
+ * Static helpers for screen-space rectangles.
+ */
 public final class ToucanScreenRects {
     private ToucanScreenRects() {
     }

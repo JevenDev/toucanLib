@@ -2,6 +2,10 @@ package com.jvn.toucanlib.client;
 
 import net.minecraft.client.Minecraft;
 
+/**
+ * Tracks whether the client is currently in-world and how long the current
+ * client session has been active.
+ */
 public final class ToucanClientSession {
     private boolean inWorld;
     private int ticksInSession;
@@ -54,6 +58,9 @@ public final class ToucanClientSession {
         return ticksInSession;
     }
 
+    /**
+     * Immutable result returned after ticking a {@link ToucanClientSession}.
+     */
     public record ToucanClientSessionUpdate(boolean enteredWorld, boolean leftWorld, boolean inWorld, int ticksInSession) {
     }
 }
