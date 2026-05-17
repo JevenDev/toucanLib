@@ -25,9 +25,37 @@ ToucanLib is a required dependency for some of my (jvn) mods. It usually does no
 
 Use a released ToucanLib artifact for CI and releases. Local builds are useful while actively developing ToucanLib, but they should be opt-in and never be the default dependency path for a consuming mod.
 
+### Using Modrinth Maven
+
+Modrinth Maven is the preferred public dependency path. ToucanLib's Modrinth project slug is `toucan`, so use loader-filtered versions when a Fabric and NeoForge artifact share the same ToucanLib version number.
+
+```gradle
+repositories {
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+dependencies {
+    modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
+}
+```
+
+For Fabric consumers, use:
+
+```gradle
+modImplementation "maven.modrinth:toucan:0.1.2-fabric"
+```
+
+Use `implementation` instead of `modImplementation` if your Gradle setup expects normal Java dependencies, such as some ModDevGradle configurations. The unfiltered `maven.modrinth:toucan:0.1.2` coordinate currently resolves, but the loader-filtered coordinates are safer for multi-loader projects.
+
 ### Using CurseMaven
 
-CurseMaven is the working public Gradle option while Modrinth approval is pending. The current public CurseMaven coordinate for the NeoForge 1.21.1 file is:
+CurseMaven remains available as a fallback. The current public CurseMaven coordinate for the NeoForge 1.21.1 file is:
 
 ```gradle
 repositories {
@@ -45,29 +73,7 @@ dependencies {
 }
 ```
 
-Use `implementation` instead of `modImplementation` if your Gradle setup expects normal Java dependencies, such as some ModDevGradle configurations. CurseMaven coordinates are file-id based, so update the trailing file id when targeting a newer uploaded ToucanLib file.
-
-### Using Modrinth Maven
-
-Modrinth Maven should become the preferred public dependency path after the Modrinth project is approved.
-
-```gradle
-repositories {
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
-}
-
-dependencies {
-    modImplementation "maven.modrinth:toucanlib:<version>"
-}
-```
-
-Replace `<version>` with the published Modrinth version once it exists.
+CurseMaven coordinates are file-id based, so update the trailing file id when targeting a newer uploaded ToucanLib file.
 
 ### Optional Local Development Override
 
@@ -86,10 +92,10 @@ repositories {
     }
 
     maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
         content {
-            includeGroup "curse.maven"
+            includeGroup "maven.modrinth"
         }
     }
 }
@@ -98,12 +104,12 @@ dependencies {
     if (useLocalToucanLib) {
         modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:0.1.3"
     } else {
-        modImplementation "curse.maven:toucanlib-1542666:8089151"
+        modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
     }
 }
 ```
 
-Do not enable `useLocalToucanLib` in CI or release builds. Release builds should always resolve ToucanLib from CurseMaven now, or Modrinth Maven once it is available.
+Do not enable `useLocalToucanLib` in CI or release builds. Release builds should resolve ToucanLib from Modrinth Maven by default, or CurseMaven when you intentionally need the fallback.
 
 ### Recommended CI Rule
 
@@ -114,7 +120,7 @@ Consuming mods should fail CI if they accidentally depend on:
 - `mavenLocal()` without an explicit local development property
 - relative local jars
 
-Release and publish workflows should resolve ToucanLib from CurseMaven or Modrinth Maven only. This prevents local workspace state from leaking into builds that are meant to be reproducible.
+Release and publish workflows should resolve ToucanLib from Modrinth Maven or CurseMaven only. This prevents local workspace state from leaking into builds that are meant to be reproducible.
 
 ## API Surface
 

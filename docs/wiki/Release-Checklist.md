@@ -98,7 +98,7 @@ Before updating consuming mods, confirm release/CI builds do not use:
 - `mavenLocal()` unless guarded behind an explicit local development property
 - relative local jars
 
-CI should resolve ToucanLib from CurseMaven now, or Modrinth Maven once available.
+CI should resolve ToucanLib from Modrinth Maven by default, or CurseMaven when you intentionally need the fallback.
 
 ## 8. Post-release notes
 

@@ -23,7 +23,7 @@ toucanLib is a small shared utility library for jvn's (that's me :D) Minecraft m
 
 ## Developer dependency guidance
 
-Use the released CurseMaven artifact for consuming mod CI and release builds. Modrinth Maven should become the preferred public Gradle path once the Modrinth project is approved. Local ToucanLib builds, `mavenLocal()`, `flatDir`, and relative jars should only be used behind an explicit local development override.
+Use the released Modrinth Maven artifact for consuming mod CI and release builds. CurseMaven remains available as a fallback. Local ToucanLib builds, `mavenLocal()`, `flatDir`, and relative jars should only be used behind an explicit local development override.
 
 ## What belongs in toucanLib?
 

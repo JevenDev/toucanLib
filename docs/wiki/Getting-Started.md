@@ -15,9 +15,37 @@ ToucanLib is intended to be consumed by JVN mods as a shared library. It is not 
 
 Use the released public artifact for CI and releases. Local ToucanLib resolution should be an explicit developer-only override.
 
+### Modrinth Maven
+
+Modrinth Maven is the preferred public Gradle path. ToucanLib's Modrinth project slug is `toucan`, and the loader-filtered coordinates avoid ambiguity when Fabric and NeoForge use the same ToucanLib version number.
+
+```gradle
+repositories {
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+dependencies {
+    modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
+}
+```
+
+For Fabric consumers, use:
+
+```gradle
+modImplementation "maven.modrinth:toucan:0.1.2-fabric"
+```
+
+Use `implementation` instead of `modImplementation` if your consuming build expects plain Java dependencies.
+
 ### CurseMaven
 
-CurseMaven is the working public Gradle path while Modrinth approval is pending. The current public CurseMaven coordinate for the NeoForge 1.21.1 file is:
+CurseMaven remains available as a fallback. The current public CurseMaven coordinate for the NeoForge 1.21.1 file is:
 
 ```gradle
 repositories {
@@ -35,29 +63,7 @@ dependencies {
 }
 ```
 
-Use `implementation` instead of `modImplementation` if your consuming build expects plain Java dependencies.
-
-### Future Modrinth Maven
-
-After Modrinth approval, prefer Modrinth Maven for normal Gradle consumption:
-
-```gradle
-repositories {
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
-}
-
-dependencies {
-    modImplementation "maven.modrinth:toucanlib:<version>"
-}
-```
-
-Replace `<version>` once the Modrinth artifact exists.
+CurseMaven coordinates are file-id based, so update the trailing file id when targeting a newer uploaded ToucanLib file.
 
 ### Optional local override
 
@@ -76,10 +82,10 @@ repositories {
     }
 
     maven {
-        name = "CurseMaven"
-        url = "https://cursemaven.com"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
         content {
-            includeGroup "curse.maven"
+            includeGroup "maven.modrinth"
         }
     }
 }
@@ -88,12 +94,12 @@ dependencies {
     if (useLocalToucanLib) {
         modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:0.1.3"
     } else {
-        modImplementation "curse.maven:toucanlib-1542666:8089151"
+        modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
     }
 }
 ```
 
-Do not enable this in CI or release builds.
+Do not enable this in CI or release builds. It must default to false and is only for active ToucanLib development.
 
 ## Building locally
 
@@ -127,7 +133,7 @@ Consuming mods should fail CI if release builds depend on:
 - `mavenLocal()` without an explicit local development property
 - relative local jars
 
-CI should resolve ToucanLib from CurseMaven now, or Modrinth Maven once available.
+CI should resolve ToucanLib from Modrinth Maven by default, or CurseMaven when you intentionally need the fallback.
 
 ## Versioning expectations
 
