@@ -24,6 +24,17 @@ Platform entrypoint classes such as `ToucanLibFabric` and `ToucanLibNeoForge` ar
 
 Future packages named `impl`, `internal`, or `experimental` should be treated as unstable and may change without notice.
 
+## Helper classification
+
+ToucanLib keeps helper classes in their existing packages for `0.x` compatibility. The table below is the source of truth for whether a public type is intended for consumers or only public because a loader, Java, or generated artifact needs to access it.
+
+| Classification | Helpers | Notes |
+| --- | --- | --- |
+| Public, early API | `ToucanLib`, `ToucanIds`, `ToucanResourceLocations`, `ToucanAnimationClock`, `ToucanClientOnly`, `ToucanClientSession`, `ToucanColors`, `ToucanEasing`, `ToucanHudAnchor`, `ToucanHudAnchors`, `ToucanMotion`, `ToucanScreenRect`, `ToucanScreenRects`, `ToucanKeybind`, `ToucanKeybinds`, `ToucanInstallMode`, `ToucanSafeClientHandler`, `ToucanServerCapabilityState` | Documented for consuming mods. Behavior should be changed carefully and deprecated first when possible. |
+| Public, NeoForge-only early API | `ToucanConfigScreens`, `ToucanEventBuses`, `ToucanEventRegistration`, `ToucanGuiLayers`, `ToucanNetwork` | Usable from NeoForge mods only. These may gain common equivalents later. |
+| Experimental public helper | `ToucanHudText` | Useful for HUD overlays, but the exact text rendering helper shape may change before `1.0.0`. Prefer keeping call sites small. |
+| Internal entrypoint | `ToucanLibFabric`, `ToucanLibNeoForge` | Public for loader construction only. Consuming mods should not import, construct, subclass, or call these classes. |
+
 ## Core API
 
 ### `ToucanLib.MOD_ID`
@@ -78,11 +89,14 @@ The `client` package contains small helpers for:
 - easing and animation progress with `ToucanEasing`
 - screen rectangles and hit testing with `ToucanScreenRect` / `ToucanScreenRects`
 - HUD anchoring with `ToucanHudAnchor` / `ToucanHudAnchors`
+- experimental outlined HUD text helpers with `ToucanHudText`
 - motion smoothing with `ToucanMotion`
 - client session tracking with `ToucanClientSession`
 - client-only guards with `ToucanClientOnly`
 
 These helpers may reference Minecraft client classes. Keep usage on physical-client code paths unless a helper explicitly says it is safe elsewhere.
+
+`ToucanHudText` is intentionally marked experimental because text drawing conventions are more likely to change with Minecraft and loader UI APIs than the math/layout helpers.
 
 ### Input helpers
 

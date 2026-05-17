@@ -20,6 +20,12 @@ public final class ToucanLib {
     private ToucanLib() {
     }
 
+    /**
+     * Runs shared loader-neutral initialization.
+     *
+     * <p>This method is intended for ToucanLib platform entrypoints. Consuming
+     * mods normally do not need to call it directly.</p>
+     */
     public static void init() {
         LOGGER.debug("Initializing toucanLib");
     }

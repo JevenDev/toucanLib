@@ -142,6 +142,8 @@ Anything documented in the root, `client`, `input`, `network`, or `util` package
 
 Once ToucanLib reaches `1.0.0`, documented public packages should be treated as stable. Future `impl`, `internal`, or `experimental` packages should be treated as unstable and may change without notice.
 
+For the current per-class classification, including helpers that are public only for loader access, see `docs/wiki/API-Surface.md`.
+
 ## Example Usage
 
 ### Resource IDs

@@ -17,6 +17,9 @@ public final class ToucanIds {
 
     /**
      * Creates a new id factory for the given mod id.
+     *
+     * @param modId namespace to use for all ids created by this factory
+     * @return a new id factory for {@code modId}
      */
     public static ToucanIds create(String modId) {
         return new ToucanIds(modId);
@@ -31,6 +34,9 @@ public final class ToucanIds {
 
     /**
      * Creates an id in this factory's namespace.
+     *
+     * @param path resource path without the namespace
+     * @return a resource location in this factory's namespace
      */
     public ResourceLocation id(String path) {
         return ToucanResourceLocations.id(modId, path);
@@ -38,6 +44,9 @@ public final class ToucanIds {
 
     /**
      * Creates a texture id under the {@code textures/} directory.
+     *
+     * @param path texture path relative to {@code textures/}
+     * @return a resource location for the texture path
      */
     public ResourceLocation texture(String path) {
         return id("textures/" + path);

@@ -4,6 +4,7 @@
  *
  * <p>Classes in this package may reference Minecraft client classes and should
  * only be loaded from client-side code paths unless their Javadocs say
- * otherwise.</p>
+ * otherwise. Most types are early public API; individual class Javadocs call
+ * out experimental helpers.</p>
  */
 package com.jvn.toucanlib.client;
