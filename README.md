@@ -41,17 +41,17 @@ repositories {
 }
 
 dependencies {
-    modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
+    modImplementation "maven.modrinth:toucan:0.1.4-neoforge"
 }
 ```
 
 For Fabric consumers, use:
 
 ```gradle
-modImplementation "maven.modrinth:toucan:0.1.2-fabric"
+modImplementation "maven.modrinth:toucan:0.1.4-fabric"
 ```
 
-Use `implementation` instead of `modImplementation` if your Gradle setup expects normal Java dependencies, such as some ModDevGradle configurations. The unfiltered `maven.modrinth:toucan:0.1.2` coordinate currently resolves, but the loader-filtered coordinates are safer for multi-loader projects.
+Use `implementation` instead of `modImplementation` if your Gradle setup expects normal Java dependencies, such as some ModDevGradle configurations. The unfiltered `maven.modrinth:toucan:0.1.4` coordinate may resolve after release, but the loader-filtered coordinates are safer for multi-loader projects.
 
 ### Using CurseMaven
 
@@ -102,9 +102,9 @@ repositories {
 
 dependencies {
     if (useLocalToucanLib) {
-        modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:0.1.3"
+        modImplementation "com.jvn.toucanlib:toucanlib-neoforge-1.21.1:0.1.4"
     } else {
-        modImplementation "maven.modrinth:toucan:0.1.2-neoforge"
+        modImplementation "maven.modrinth:toucan:0.1.4-neoforge"
     }
 }
 ```
