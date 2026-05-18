@@ -30,7 +30,7 @@ ToucanLib keeps helper classes in their existing packages for `0.x` compatibilit
 
 | Classification | Helpers | Notes |
 | --- | --- | --- |
-| Public, early API | `ToucanLib`, `ToucanIds`, `ToucanResourceLocations`, `ToucanAnimationClock`, `ToucanClientOnly`, `ToucanClientSession`, `ToucanColors`, `ToucanEasing`, `ToucanHudAnchor`, `ToucanHudAnchors`, `ToucanMotion`, `ToucanScreenRect`, `ToucanScreenRects`, `ToucanKeybind`, `ToucanKeybinds`, `ToucanInstallMode`, `ToucanSafeClientHandler`, `ToucanServerCapabilityState` | Documented for consuming mods. Behavior should be changed carefully and deprecated first when possible. |
+| Public, early API | `ToucanLib`, `ToucanIds`, `ToucanResourceLocations`, `ToucanAnimationClock`, `ToucanClientOnly`, `ToucanClientSession`, `ToucanColors`, `ToucanEasing`, `ToucanHudAnchor`, `ToucanHudAnchors`, `ToucanMotion`, `ToucanScreenRect`, `ToucanScreenRects`, `ToucanWorldTextIndicators`, `ToucanWorldTextStyle`, `ToucanKeybind`, `ToucanKeybinds`, `ToucanInstallMode`, `ToucanSafeClientHandler`, `ToucanServerCapabilityState` | Documented for consuming mods. Behavior should be changed carefully and deprecated first when possible. |
 | Public, NeoForge-only early API | `ToucanConfigScreens`, `ToucanEventBuses`, `ToucanEventRegistration`, `ToucanGuiLayers`, `ToucanNetwork` | Usable from NeoForge mods only. These may gain common equivalents later. |
 | Experimental public helper | `ToucanHudText` | Useful for HUD overlays, but the exact text rendering helper shape may change before `1.0.0`. Prefer keeping call sites small. |
 | Internal entrypoint | `ToucanLibFabric`, `ToucanLibNeoForge` | Public for loader construction only. Consuming mods should not import, construct, subclass, or call these classes. |
@@ -90,6 +90,7 @@ The `client` package contains small helpers for:
 - screen rectangles and hit testing with `ToucanScreenRect` / `ToucanScreenRects`
 - HUD anchoring with `ToucanHudAnchor` / `ToucanHudAnchors`
 - experimental outlined HUD text helpers with `ToucanHudText`
+- animated in-world text indicators with `ToucanWorldTextIndicators` / `ToucanWorldTextStyle`
 - motion smoothing with `ToucanMotion`
 - client session tracking with `ToucanClientSession`
 - client-only guards with `ToucanClientOnly`
@@ -97,6 +98,76 @@ The `client` package contains small helpers for:
 These helpers may reference Minecraft client classes. Keep usage on physical-client code paths unless a helper explicitly says it is safe elsewhere.
 
 `ToucanHudText` is intentionally marked experimental because text drawing conventions are more likely to change with Minecraft and loader UI APIs than the math/layout helpers.
+
+#### In-world text indicators
+
+`ToucanWorldTextIndicators` is a small client-side manager/renderer for animated world-space text indicators such as damage numbers, combo popups, warning glyphs, or status callouts.
+
+It provides:
+
+- floating indicators with randomized scatter and drift
+- entity-anchored indicators that follow a living target while it remains valid
+- directed/arc movement for indicators that orbit or peel away from an entity
+- billboarded full-bright text rendering
+- Minecraft's eight-way outlined text stroke
+- shared pop, hover, sway, tilt, fade, drift, and expiry behavior
+
+The consuming mod owns gameplay decisions and presets. ToucanLib only owns the reusable animation and rendering behavior.
+
+Basic NeoForge usage:
+
+```java
+private static final ToucanWorldTextIndicators INDICATORS = new ToucanWorldTextIndicators();
+
+public static void spawnDamage(Vec3 hitPosition, float damage, long nowMillis) {
+    INDICATORS.addFloating(
+            hitPosition,
+            ToucanWorldTextStyle.simple(Integer.toString(Math.round(damage)), 0xFFFFF7E0),
+            nowMillis);
+}
+
+@SubscribeEvent
+public static void renderWorld(RenderLevelStageEvent event) {
+    if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+        return;
+    }
+
+    Minecraft minecraft = Minecraft.getInstance();
+    if (minecraft.level == null || minecraft.player == null) {
+        INDICATORS.clear();
+        return;
+    }
+
+    INDICATORS.render(
+            minecraft,
+            event.getPoseStack(),
+            event.getCamera().getPosition(),
+            event.getPartialTick().getGameTimeDeltaPartialTick(true),
+            System.currentTimeMillis());
+}
+```
+
+For a mod with pause-aware animation timing, pass that mod's own client animation clock value instead of `System.currentTimeMillis()`.
+
+Create explicit `ToucanWorldTextStyle` presets when a mod needs a specific feel:
+
+```java
+ToucanWorldTextStyle crit = new ToucanWorldTextStyle(
+        "crit!",
+        0xFFFFD166,
+        false,
+        1100,
+        0.023F,
+        0.34D,
+        0.14D,
+        0.28D,
+        1.45F,
+        0.03F,
+        0.045F,
+        6.0F);
+```
+
+Keep style names, colors, particles, combat rules, and payload handling in the consuming mod. Good ToucanLib usage is to share the renderer, not to move a mod's combat feedback system into the library.
 
 ### Input helpers
 

@@ -21,6 +21,7 @@ Good fits:
 - constants and shared logging
 - pure Java utilities
 - Minecraft API helpers that are available to both loaders
+- client-side rendering helpers that use shared Minecraft client APIs and stay free of loader event classes
 - Architectury-backed abstractions
 - shared resources used by both platform jars
 
